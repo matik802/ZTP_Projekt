@@ -4,6 +4,10 @@ import java.util.List;
 
 public class HardQuestion extends Question {
 
+    public HardQuestion(int correctAnswerId, String questionToAnswer, String language) {
+        super(correctAnswerId, questionToAnswer, language);
+    }
+
     @Override
     public List<Word> getAnswers() {
         throw new UnsupportedOperationException("Unimplemented method 'getAnswers'");

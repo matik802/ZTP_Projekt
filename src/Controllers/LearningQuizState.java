@@ -1,5 +1,7 @@
 package Controllers;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -8,41 +10,56 @@ import Models.EasyQuestion;
 import Models.HardQuestion;
 import Models.Word;
 import Utils.Constants;
-import Views.QuizView;
 
 public class LearningQuizState extends QuizState {
     private Boolean answeredCorrectly = false;
 
-    public LearningQuizState(QuizView quizView) {
-        super(quizView);
+    @Override
+    public void startQuiz() {
+        Random rand = new Random();
+        int n;
+        if (currentQuestion == null) {
+            n = rand.nextInt(questionsPool.size());
+            currentQuestion = questionsPool.get(n);
+
+            quizView.setQuestion(currentQuestion.getQuestionToAnswer());
+            quizView.getNextButton().addActionListener(new ActionListener(){  
+                public void actionPerformed(ActionEvent e){  
+                    getNextQuestion();
+                }  
+            });  	
+
+            return;
+        }
     }
 
     @Override
     public void getNextQuestion() {
-        if (++questionsCount == 10) { //singleton
-            //summary screen
-            return;
-        }
         String userAnswer = null;
         if (quizDifficultyManager.getDifficulty().equals(Constants.easyDifficultyLevel)) {
             //userAnswer = quizView.getCheckBoxAnswer().getText();
         }
         else if (quizDifficultyManager.getDifficulty().equals(Constants.hardDifficultyLevel)) {
-            //userAnswer = quizView.getAnswerField().getText();
+            userAnswer = quizView.getUserAnswerTextField().getText();
         }
 
         String difficulty = null;
-        if (currentQuestion.getAnswers().equals(userAnswer)) {
+        if (currentQuestion.getCorrectAnswer().getName().equals(userAnswer)) {
             difficulty = quizDifficultyManager.getDifficulty(true);
             answeredCorrectly = true;
+            if (++questionsCount == quizConfiguration.getQuizLength()) {
+                //summary screen
+                quizView.showQuizOverScreen(-1);
+                return;
+            }
         }
         else {
             difficulty = quizDifficultyManager.getDifficulty(false);
         }
 
-        questionsPool.remove(currentQuestion);
+        if (!answeredCorrectly) return;
 
-        if (answeredCorrectly) return;
+        questionsPool.remove(currentQuestion);
 
         Random rand = new Random();
         int n = rand.nextInt(questionsPool.size());
@@ -52,26 +69,27 @@ public class LearningQuizState extends QuizState {
             currentQuestion = (EasyQuestion) currentQuestion;
             List<Word> answers = new ArrayList<>();
             answers.add(currentQuestion.getCorrectAnswer());
-            for (int i = 0; i < 5 + x; i++) { //singleton
+            for (int i = 0; i < quizConfiguration.getEasyDiffultyQuestions() + x; i++) {
                 n = rand.nextInt(wordsPool.size());
-                if (!wordsPool.get(n).getName().equals(currentQuestion.getCorrectAnswer())) {
+                if (!wordsPool.get(n).getName().equals(currentQuestion.getCorrectAnswer().getName())) {
                     answers.add(wordsPool.get(n));
                 }
                 else x++;
             }
-            n = rand.nextInt(5); //singleton
+            n = rand.nextInt(quizConfiguration.getEasyDiffultyQuestions());
             Word temp1 = answers.get(0);
             Word temp2 = answers.get(n);
             answers.add(n, temp1);
             answers.add(0, temp2);
-            //ustawić kontrolki do następnego pytania
-            //onClick() {getNextQuestion()}
+            
+            //TODO
         }
         else {
             currentQuestion = (HardQuestion) currentQuestion;
-            //ustawić kontrolki do następnego pytania
-            //onClick() {getNextQuestion()}
+            
+            quizView.setQuestion(currentQuestion.getQuestionToAnswer());
         }
+        answeredCorrectly = false;
     }
     
 }

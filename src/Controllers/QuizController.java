@@ -4,8 +4,12 @@ import Views.QuizView;
 public class QuizController {
     private QuizState quizState; 
     
-    public QuizController(QuizView quizView) {
-        quizState.setQuizView(quizView);
+    public void fetchData() {
+        quizState.fetchData();
+    }
+
+    public void startQuiz() {
+        quizState.startQuiz();
     }
 
     public void getNextQuestion() {
@@ -18,5 +22,17 @@ public class QuizController {
 
     public void setQuestionsLanguage(String questionsLanguage) {
         quizState.setQuestionsLanguage(questionsLanguage);
+    }
+
+    public void setQuizConfiguration(QuizConfiguration quizConfiguration) {
+        quizState.setQuizConfiguration(quizConfiguration);
+    }
+
+    public void setQuizDifficultyManager(IQuizDifficultyManager quizDifficultyManager) {
+        quizState.setQuizDifficultyManager(quizDifficultyManager);
+    }
+
+    public void setQuizView(QuizView quizView) {
+        quizState.setQuizView(quizView);
     }
 }

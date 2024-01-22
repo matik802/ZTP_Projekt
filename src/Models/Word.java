@@ -5,6 +5,12 @@ public class Word {
     private String name;
     private String language;
 
+    public Word(String name, String language) {
+        id = 1;
+        this.name = name;
+        this.language = language;
+    }
+
     public int getId() {
         return id;
     }
@@ -24,7 +30,7 @@ public class Word {
     public String getLanguage() {
         return language;
     }
-    
+
     public void setLanguage(String language) {
         this.language = language;
     }

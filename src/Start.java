@@ -6,30 +6,43 @@ import javax.swing.JLabel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import Controllers.LearningQuizState;
+import Controllers.QuizConfiguration;
+import Controllers.QuizController;
+import Controllers.StaticQuiz;
+import Controllers.TestQuizState;
+import Utils.Constants;
 import Views.QuizView;
 
 public class Start {
 
 	public static void main(String[] args) {
-		QuizView frame = new QuizView();
-		frame.setLayout(null);
-		frame.setSize(500,500);
-		frame.setVisible(true);
+		QuizView quizView = new QuizView();
+		quizView.setLayout(null);
+		quizView.setSize(500,500);
+		quizView.setVisible(true);
 
-		JLabel text=new JLabel("Question");  
-		text.setBounds(10,10, 100,30);
+		//z pl na ang, tryb testu, stały poziom trudności, wysoki poziom trudności 
+		// QuizController quizController = new QuizController();
+		// quizController.setQuizState(new TestQuizState());
+		// quizController.setQuestionsLanguage(Constants.languagePl);
+		// quizController.setQuizConfiguration(QuizConfiguration.getInstance());
+		// StaticQuiz staticQuiz = new StaticQuiz();
+		// staticQuiz.setDifficulty(Constants.hardDifficultyLevel);
+		// quizController.setQuizDifficultyManager(staticQuiz);
+		// quizController.setQuizView(quizView);
 
-		JButton button;
-		button = new JButton("Next question");
-		button.setBounds(10,50,150,30);
-		button.addActionListener(new ActionListener(){  
-			public void actionPerformed(ActionEvent e){  
-				frame.getText().setVisible(false);  
-					}  
-				});  
-
-		frame.setText(text);
-		frame.setButton(button);
+		//z pl na ang, tryb nauki, stały poziom trudności, wysoki poziom trudności 
+		QuizController quizController = new QuizController();
+		quizController.setQuizState(new LearningQuizState());
+		quizController.setQuestionsLanguage(Constants.languagePl);
+		quizController.setQuizConfiguration(QuizConfiguration.getInstance());
+		StaticQuiz staticQuiz = new StaticQuiz();
+		staticQuiz.setDifficulty(Constants.hardDifficultyLevel);
+		quizController.setQuizDifficultyManager(staticQuiz);
+		quizController.setQuizView(quizView);
 		
+		quizController.fetchData();
+		quizController.startQuiz();
 	}
 }
