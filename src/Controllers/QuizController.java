@@ -19,7 +19,7 @@ public class QuizController {
            
     }
 
-    public void showResult() {
+    public void setState() {
 
     }
 
