@@ -7,6 +7,8 @@ import javax.swing.JLabel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import Views.QuizView;
+
 public class Start {
 
 	public static void main(String[] args) {
@@ -15,12 +17,12 @@ public class Start {
 		frame.setSize(500,500);
 		frame.setVisible(true);
 
-		JLabel text=new JLabel("Quiz.");  
+		JLabel text=new JLabel("Question");  
 		text.setBounds(10,10, 100,30);
 
 		JButton button;
-		button = new JButton("Start");
-		button.setBounds(10,50,95,30);
+		button = new JButton("Next question");
+		button.setBounds(10,50,150,30);
 		button.addActionListener(new ActionListener(){  
 			public void actionPerformed(ActionEvent e){  
 				frame.getText().setVisible(false);  
