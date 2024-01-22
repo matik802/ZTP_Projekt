@@ -1,27 +1,22 @@
 package Controllers;
-import java.util.List;
-
-import Models.Question;
 import Views.QuizView;
 
 public class QuizController {
-    private QuizState quizState;
-    private List<Question> questionsPool;
-    private QuizView quizView;
-    private String language;
+    private QuizState quizState; 
     
     public QuizController(QuizView quizView) {
-        this.quizView = quizView;
-        //pobieranie z bazy
+        quizState.setQuizView(quizView);
     }
 
     public void getNextQuestion() {
-        
+        quizState.getNextQuestion();
     }
 
-    public void setState(QuizState quizState) {
+    public void setQuizState(QuizState quizState) {
         this.quizState = quizState;
     }
 
-
+    public void setQuestionsLanguage(String questionsLanguage) {
+        quizState.setQuestionsLanguage(questionsLanguage);
+    }
 }

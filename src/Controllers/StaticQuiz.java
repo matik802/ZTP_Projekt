@@ -1,15 +1,15 @@
 package Controllers;
 
 public class StaticQuiz implements IQuizDifficultyManager{
-
+    private String difficulty;
     @Override
-    public String getDifficulty() {
-        throw new UnsupportedOperationException("Unimplemented method 'getDifficulty'");
+    public String getDifficulty(Boolean... correctAnswer) {
+        return difficulty;
     }
 
     @Override
     public void setDifficulty(String difficulty) {
-        throw new UnsupportedOperationException("Unimplemented method 'setDifficulty'");
+        this.difficulty = difficulty;
     }
     
 }
