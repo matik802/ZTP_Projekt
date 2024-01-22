@@ -16,11 +16,11 @@ public class QuizController {
     }
 
     public void getNextQuestion() {
-           
+        
     }
 
-    public void setState() {
-
+    public void setState(QuizState quizState) {
+        this.quizState = quizState;
     }
 
 
