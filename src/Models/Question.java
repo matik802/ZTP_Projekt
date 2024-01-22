@@ -1,5 +1,7 @@
 package Models;
 
+import java.util.List;
+
 public abstract class Question {
     private int id;
     private String questionToAnswer;
@@ -37,4 +39,8 @@ public abstract class Question {
     public void setLanguage(String language) {
         this.language = language;
     }
+
+    public abstract List<Word> getAnswers();
+
+    public abstract void setAnswers(List<Word> answers);
 }
