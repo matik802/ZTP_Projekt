@@ -10,10 +10,8 @@ public abstract class Question {
     private String language;
 
     public Question(int correctAnswerId, String questionToAnswer, String language) {
-        id = 1;
         this.correctAnswerId = correctAnswerId;
         this.questionToAnswer = questionToAnswer;
-        //this.correctAnswer = correctAnswer;
         this.language = language;
     }
 
