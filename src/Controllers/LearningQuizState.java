@@ -9,9 +9,11 @@ import Utils.Constants;
 
 public class LearningQuizState extends QuizState {
     private Boolean answeredCorrectly = false;
+    private String oldDifficulty;
 
     @Override
     public void startQuiz() {
+        oldDifficulty = quizDifficultyManager.getDifficulty();
         Random rand = new Random();
         int n;
         if (currentQuestion == null) {
@@ -59,10 +61,10 @@ public class LearningQuizState extends QuizState {
     @Override
     public void getNextQuestion() {
         String userAnswer = null;
-        if (quizDifficultyManager.getDifficulty().equals(Constants.easyDifficultyLevel)) {
+        if (oldDifficulty.equals(Constants.easyDifficultyLevel)) {
             userAnswer = quizView.getSelectAnswerList().getSelectedValue().toString();
         }
-        else if (quizDifficultyManager.getDifficulty().equals(Constants.hardDifficultyLevel)) {
+        else if (oldDifficulty.equals(Constants.hardDifficultyLevel)) {
             userAnswer = quizView.getUserAnswerTextField().getText();
         }
 
@@ -81,6 +83,14 @@ public class LearningQuizState extends QuizState {
         }
 
         if (!answeredCorrectly) return;
+        
+        if (!oldDifficulty.equals(difficulty)) {
+            quizView.clear();
+            if (difficulty.equals(Constants.easyDifficultyLevel)) quizView.buildEasyQuestionUI();
+            else quizView.buildHardQuestionUI();
+            quizView.setNextButtonAction(this);
+            oldDifficulty = difficulty;
+        }   
 
         questionsPool.remove(currentQuestion);
 

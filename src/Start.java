@@ -85,9 +85,9 @@ public class Start {
 
 		//10
 		//z ang na pl, tryb testu, adaptatywny poziom trudności (zaczyna się na łatwym)
-		IQuizDifficultyManager quizDifficultyManager = new AdaptiveQuiz(QuizConfiguration.getInstance().getStreakToDifficultyChange());
-		quizDifficultyManager.setDifficulty(Constants.easyDifficultyLevel);
-		setQuiz(new TestQuizState(), Constants.languageEng, QuizConfiguration.getInstance(), quizDifficultyManager, quizView);
+		// IQuizDifficultyManager quizDifficultyManager = new AdaptiveQuiz(QuizConfiguration.getInstance().getStreakToDifficultyChange());
+		// quizDifficultyManager.setDifficulty(Constants.easyDifficultyLevel);
+		// setQuiz(new TestQuizState(), Constants.languageEng, QuizConfiguration.getInstance(), quizDifficultyManager, quizView);
 
 		//11
 		//z pl na ang, tryb testu, adaptatywny poziom trudności (zaczyna się na trudnym)
@@ -100,5 +100,29 @@ public class Start {
 		//IQuizDifficultyManager quizDifficultyManager = new AdaptiveQuiz(QuizConfiguration.getInstance().getStreakToDifficultyChange());
 		// quizDifficultyManager.setDifficulty(Constants.hardDifficultyLevel);
 		// setQuiz(new TestQuizState(), Constants.languageEng, QuizConfiguration.getInstance(), quizDifficultyManager, quizView);
+
+		//13
+		//z pl na ang, tryb nauki, adaptatywny poziom trudności (zaczyna się na łatwym)
+		// IQuizDifficultyManager quizDifficultyManager = new AdaptiveQuiz(QuizConfiguration.getInstance().getStreakToDifficultyChange());
+		// quizDifficultyManager.setDifficulty(Constants.easyDifficultyLevel);
+		// setQuiz(new LearningQuizState(), Constants.languagePl, QuizConfiguration.getInstance(), quizDifficultyManager, quizView);
+
+		//14
+		//z ang na pl, tryb nauki, adaptatywny poziom trudności (zaczyna się na łatwym)
+		// IQuizDifficultyManager quizDifficultyManager = new AdaptiveQuiz(QuizConfiguration.getInstance().getStreakToDifficultyChange());
+		// quizDifficultyManager.setDifficulty(Constants.easyDifficultyLevel);
+		// setQuiz(new LearningQuizState(), Constants.languageEng, QuizConfiguration.getInstance(), quizDifficultyManager, quizView);
+
+		//15
+		//z pl na ang, tryb nauki, adaptatywny poziom trudności (zaczyna się na trudnym)
+		// IQuizDifficultyManager quizDifficultyManager = new AdaptiveQuiz(QuizConfiguration.getInstance().getStreakToDifficultyChange());
+		// quizDifficultyManager.setDifficulty(Constants.hardDifficultyLevel);
+		// setQuiz(new LearningQuizState(), Constants.languagePl, QuizConfiguration.getInstance(), quizDifficultyManager, quizView);
+
+		//16
+		//z ang na pl, tryb nauki, adaptatywny poziom trudności (zaczyna się na trudnym)
+		IQuizDifficultyManager quizDifficultyManager = new AdaptiveQuiz(QuizConfiguration.getInstance().getStreakToDifficultyChange());
+		quizDifficultyManager.setDifficulty(Constants.hardDifficultyLevel);
+		setQuiz(new LearningQuizState(), Constants.languageEng, QuizConfiguration.getInstance(), quizDifficultyManager, quizView);
 	}
 }
