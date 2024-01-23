@@ -3,7 +3,10 @@ public class QuizConfiguration {
     private static QuizConfiguration configuration = null;
     private int easyDiffultyQuestions = 4;
     private int quizLength = 4;
-    private int streakToDifficultyChange = 2;
+    private int toEasyInLeariningMode = 2;
+    private int toHardInLeariningMode = 2;
+    private int toEasyInTestMode = 2;
+    private int toHardInTestMode = 2;
 
     public static QuizConfiguration getInstance() {
         if (configuration == null) configuration = new QuizConfiguration();
@@ -18,7 +21,19 @@ public class QuizConfiguration {
         return quizLength;
     }
 
-    public int getStreakToDifficultyChange() {
-        return streakToDifficultyChange;
+    public int getToEasyInLeariningMode() {
+        return toEasyInLeariningMode;
+    }
+
+    public int getToEasyInTestMode() {
+        return toEasyInTestMode;
+    }
+
+    public int getToHardInLeariningMode() {
+        return toHardInLeariningMode;
+    }
+
+    public int getToHardInTestMode() {
+        return toHardInTestMode;
     }
 }
