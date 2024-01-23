@@ -6,20 +6,25 @@ public class AdaptiveQuiz implements IQuizDifficultyManager{
     private String difficulty;
     private int badAnswerStreak;
     private int goodAnswerStreak;
+    private int streak;
+    public AdaptiveQuiz(int streak) {
+        super();
+        this.streak = streak;
+    }
     @Override
     public String getDifficulty(Boolean... correctAnswer) {
-        if (correctAnswer[0] != null) {
+        if (correctAnswer.length > 0) {
             if (correctAnswer[0]) {
                 goodAnswerStreak++;
                 badAnswerStreak = 0;
-                if (goodAnswerStreak == 3) {
+                if (goodAnswerStreak == streak) {
                     difficulty = Constants.hardDifficultyLevel;
                 }
             }
             else if (!correctAnswer[0]) {
                 badAnswerStreak++;
                 goodAnswerStreak = 0;
-                if (badAnswerStreak == 3) {
+                if (badAnswerStreak == streak) {
                     difficulty = Constants.easyDifficultyLevel;
                 }
             }

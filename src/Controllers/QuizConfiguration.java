@@ -1,9 +1,9 @@
 package Controllers;
 public class QuizConfiguration {
     private static QuizConfiguration configuration = null;
-    private int easyDiffultyQuestions = 0;
+    private int easyDiffultyQuestions = 4;
     private int quizLength = 4;
-    private int streakToDifficultyChange = 3;
+    private int streakToDifficultyChange = 2;
 
     public static QuizConfiguration getInstance() {
         if (configuration == null) configuration = new QuizConfiguration();
