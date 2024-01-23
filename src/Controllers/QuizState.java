@@ -34,13 +34,13 @@ public abstract class QuizState {
 
             questionsPool = new ArrayList<>();
             HardQuestion[] hardQuestions = new HardQuestion[10];
-            hardQuestions[0] = new HardQuestion(1,"Pies?",Constants.languagePl);
+            hardQuestions[0] = new HardQuestion(1,"Pies",Constants.languagePl);
             hardQuestions[0].setCorrectAnswer(wordsPool.get(0));
             questionsPool.add(hardQuestions[0]);
-            hardQuestions[1] = new HardQuestion(1,"Kot?",Constants.languagePl);
+            hardQuestions[1] = new HardQuestion(1,"Kot",Constants.languagePl);
             hardQuestions[1].setCorrectAnswer(wordsPool.get(1));
             questionsPool.add(hardQuestions[1]);
-            hardQuestions[2] = new HardQuestion(1,"Koń?",Constants.languagePl);
+            hardQuestions[2] = new HardQuestion(1,"Koń",Constants.languagePl);
             hardQuestions[2].setCorrectAnswer(wordsPool.get(2));
             questionsPool.add(hardQuestions[2]);
             hardQuestions[3] = new HardQuestion(1,"Dom",Constants.languagePl);

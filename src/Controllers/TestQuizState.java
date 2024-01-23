@@ -1,14 +1,8 @@
 package Controllers;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
 
 import Models.EasyQuestion;
 import Models.HardQuestion;
@@ -27,11 +21,7 @@ public class TestQuizState extends QuizState{
             currentQuestion = questionsPool.get(n);
 
             quizView.setQuestion(currentQuestion.getQuestionToAnswer());
-            quizView.getNextButton().addActionListener(new ActionListener(){  
-                public void actionPerformed(ActionEvent e){  
-                    getNextQuestion();
-                }  
-            });  	
+            quizView.setNextButtonAction(this);
 
             return;
         }

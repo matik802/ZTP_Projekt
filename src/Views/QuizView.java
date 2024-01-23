@@ -1,9 +1,14 @@
 package Views;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+
+import Controllers.QuizState;
 
 public class QuizView extends JFrame {
     private JLabel questionLabel;
@@ -11,17 +16,17 @@ public class QuizView extends JFrame {
 	private JButton nextButton;
 
 	public QuizView() {
-		questionLabel = new JLabel("Question");  
+		questionLabel = new JLabel("No questions");  
 		questionLabel.setBounds(10,10,400,30);
-        this.setQuestionLabel(questionLabel);
+        this.add(questionLabel);
 
 		userAnswerTextField = new JTextField("Answer...");
         userAnswerTextField.setBounds(10,40,200,30);
-        this.setUserAnswerTextField(userAnswerTextField);
+        this.add(userAnswerTextField);
 		                                
         nextButton = new JButton("Next question");
         nextButton.setBounds(10,100,150,30);
-		this.setNextButton(nextButton);
+		this.add(nextButton);
 	}
 
 	public void setQuestion(String question) {
@@ -64,8 +69,12 @@ public class QuizView extends JFrame {
 		return nextButton;
 	}
 
-	public void setNextButton(JButton nextButton) {
-		this.nextButton = nextButton;
+	public void setNextButtonAction(QuizState quizState) {
+		nextButton.addActionListener(new ActionListener(){  
+			public void actionPerformed(ActionEvent e){  
+				quizState.getNextQuestion();
+			}  
+		});  
 		this.add(nextButton);
 	}
 }

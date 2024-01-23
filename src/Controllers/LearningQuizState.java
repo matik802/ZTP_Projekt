@@ -1,7 +1,5 @@
 package Controllers;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -23,11 +21,7 @@ public class LearningQuizState extends QuizState {
             currentQuestion = questionsPool.get(n);
 
             quizView.setQuestion(currentQuestion.getQuestionToAnswer());
-            quizView.getNextButton().addActionListener(new ActionListener(){  
-                public void actionPerformed(ActionEvent e){  
-                    getNextQuestion();
-                }  
-            });  	
+            quizView.setNextButtonAction(this);	
 
             return;
         }
