@@ -1,3 +1,4 @@
+import Controllers.AdaptiveQuiz;
 import Controllers.IQuizDifficultyManager;
 import Controllers.LearningQuizState;
 import Controllers.QuizConfiguration;
@@ -30,9 +31,9 @@ public class Start {
 
 		//1
 		//z pl na ang, tryb testu, stały poziom trudności, wysoki poziom trudności 
-		IQuizDifficultyManager quizDifficultyManager = new StaticQuiz();
-		quizDifficultyManager.setDifficulty(Constants.hardDifficultyLevel);
-		setQuiz(new TestQuizState(), Constants.languagePl, QuizConfiguration.getInstance(), quizDifficultyManager, quizView);
+		// IQuizDifficultyManager quizDifficultyManager = new StaticQuiz();
+		// quizDifficultyManager.setDifficulty(Constants.hardDifficultyLevel);
+		// setQuiz(new TestQuizState(), Constants.languagePl, QuizConfiguration.getInstance(), quizDifficultyManager, quizView);
 
 		//2
 		//z ang na pl, tryb testu, stały poziom trudności, wysoki poziom trudności
@@ -84,9 +85,9 @@ public class Start {
 
 		//10
 		//z ang na pl, tryb testu, adaptatywny poziom trudności (zaczyna się na łatwym)
-		//IQuizDifficultyManager quizDifficultyManager = new AdaptiveQuiz(QuizConfiguration.getInstance().getStreakToDifficultyChange());
-		// quizDifficultyManager.setDifficulty(Constants.easyDifficultyLevel);
-		// setQuiz(new TestQuizState(), Constants.languageEng, QuizConfiguration.getInstance(), quizDifficultyManager, quizView);
+		IQuizDifficultyManager quizDifficultyManager = new AdaptiveQuiz(QuizConfiguration.getInstance().getStreakToDifficultyChange());
+		quizDifficultyManager.setDifficulty(Constants.easyDifficultyLevel);
+		setQuiz(new TestQuizState(), Constants.languageEng, QuizConfiguration.getInstance(), quizDifficultyManager, quizView);
 
 		//11
 		//z pl na ang, tryb testu, adaptatywny poziom trudności (zaczyna się na trudnym)
