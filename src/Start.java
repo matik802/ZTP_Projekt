@@ -9,128 +9,167 @@ import Controllers.TestQuizState;
 import Utils.Constants;
 import Views.QuizView;
 
-public class Start {
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class Start extends JFrame implements ActionListener {
+
+	private static JButton learnButton, testButton, easyButton, hardButton, adaptiveButton, polishButton, englishButton, startButton;
+	IQuizDifficultyManager quizDifficultyManager;
+	QuizConfiguration quizConfiguration;
+	QuizState quizState;
+	String startingDifficulty, startingLanguage;
+	QuizView quizView;
+
 	public static void setQuiz(QuizState quizState, String language, QuizConfiguration quizConfiguration, IQuizDifficultyManager quizDifficultyManager, QuizView quizView) {
 		QuizController quizController = new QuizController();
 		quizController.setQuizState(quizState);
 		quizController.setQuestionsLanguage(language);
 		quizController.setQuizConfiguration(quizConfiguration);
-
 		quizController.setQuizDifficultyManager(quizDifficultyManager);
 		quizController.setQuizView(quizView);
-
 		quizController.fetchData();
 		quizController.startQuiz();
 	}
 
+	public Start() {
+
+		setTitle("Quiz App");
+		setSize(900, 600);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setLocationRelativeTo(null);
+
+		JPanel quizMenu = new JPanel();
+		quizMenu.setSize(500, 300);
+		setDefaults();
+
+		JPanel mainPanel = new JPanel();
+		mainPanel.setLayout(new GridLayout(4, 2));
+
+		JPanel languagePanel = new JPanel();
+		languagePanel.setBorder(BorderFactory.createTitledBorder("Choose Language"));
+		languagePanel.setLayout(new GridLayout(1, 2));
+		polishButton = createButton("Polish", languagePanel);
+		polishButton.setEnabled(false);
+		englishButton = createButton("English", languagePanel);
+
+		JPanel quizTypePanel = new JPanel();
+		quizTypePanel.setBorder(BorderFactory.createTitledBorder("Choose Quiz Type"));
+		quizTypePanel.setLayout(new GridLayout(1, 2));
+		learnButton = createButton("Learn", quizTypePanel);
+		learnButton.setEnabled(false);
+		testButton = createButton("Test", quizTypePanel);
+
+		JPanel difficultyPanel = new JPanel();
+		difficultyPanel.setBorder(BorderFactory.createTitledBorder("Choose Difficulty"));
+		difficultyPanel.setLayout(new GridLayout(1, 3));
+		easyButton = createButton("Easy", difficultyPanel);
+		easyButton.setEnabled(false);
+		hardButton = createButton("Hard", difficultyPanel);
+		adaptiveButton = createButton("Adaptive", difficultyPanel);
+
+		JPanel startPanel = new JPanel();
+		startPanel.setBorder(BorderFactory.createTitledBorder("Start Quiz"));
+		startButton = createButton("Start", startPanel);
+
+		mainPanel.add(languagePanel);
+		mainPanel.add(quizTypePanel);
+		mainPanel.add(difficultyPanel);
+		mainPanel.add(startPanel);
+
+		quizMenu.add(mainPanel);
+
+		setVisible(true);
+
+		add(quizMenu);
+
+	}
+
+	void setDefaults() {
+		startingDifficulty = Constants.easyDifficultyLevel;
+		startingLanguage = Constants.languagePl;
+		quizDifficultyManager = new StaticQuiz();
+		quizDifficultyManager.setDifficulty(startingDifficulty);
+		quizConfiguration = QuizConfiguration.getInstance();
+		quizState = new LearningQuizState();
+	}
+
+	private JButton createButton(String label, JPanel panel) {
+		JButton button = new JButton(label);
+		button.addActionListener(this);
+		panel.add(button);
+		return button;
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		JButton sourceButton = (JButton) e.getSource();
+
+		if (sourceButton == polishButton || sourceButton == englishButton) {
+			polishButton.setEnabled(sourceButton != polishButton);
+			englishButton.setEnabled(sourceButton != englishButton);
+		} else if (sourceButton == learnButton || sourceButton == testButton) {
+			learnButton.setEnabled(sourceButton != learnButton);
+			testButton.setEnabled(sourceButton != testButton);
+		} else if (sourceButton == easyButton || sourceButton == hardButton || sourceButton == adaptiveButton) {
+			easyButton.setEnabled(sourceButton != easyButton);
+			hardButton.setEnabled(sourceButton != hardButton);
+			adaptiveButton.setEnabled(sourceButton != adaptiveButton);
+			if (sourceButton == adaptiveButton) {
+				showAdaptiveOptionsDialog();
+			}
+		} else if (sourceButton == startButton) {
+			quizView = new QuizView();
+			setQuiz(quizState, startingLanguage, quizConfiguration, quizDifficultyManager, quizView);
+		}
+
+		switch (sourceButton.getText()) {
+			case "Learn" -> {
+				quizState = new LearningQuizState();
+			}
+			case "Test" -> {
+				quizState = new TestQuizState();
+			}
+			case "Easy" -> {
+				quizDifficultyManager = new StaticQuiz();
+				quizDifficultyManager.setDifficulty(Constants.easyDifficultyLevel);
+			}
+			case "Hard" -> {
+				quizDifficultyManager = new StaticQuiz();
+				quizDifficultyManager.setDifficulty(Constants.hardDifficultyLevel);
+			}
+			case "Adaptive" -> {
+				if (quizState.toString().equals("class Controllers.LearningQuizState")) {
+					quizDifficultyManager = new AdaptiveQuiz(quizConfiguration.getToEasyInLeariningMode(), quizConfiguration.getToHardInLeariningMode());
+				} else {
+					quizDifficultyManager = new AdaptiveQuiz(quizConfiguration.getToEasyInTestMode(), quizConfiguration.getToHardInTestMode());
+				}
+				quizDifficultyManager.setDifficulty(startingDifficulty);
+			}
+			case "Polish" -> {
+				startingLanguage = Constants.languagePl;
+			}
+			case "English" -> {
+				startingLanguage = Constants.languageEng;
+			}
+		}
+	}
+
+	private void showAdaptiveOptionsDialog() {
+		String[] options = {"Easy -> Hard", "Hard -> Easy"};
+		int choice = JOptionPane.showOptionDialog(this, "Choose Adaptive Options", "Adaptive Options",
+				JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+
+		if (choice == 0) {
+			startingDifficulty = Constants.easyDifficultyLevel;
+		} else if (choice == 1) {
+			startingDifficulty = Constants.hardDifficultyLevel;
+		}
+	}
+
 	public static void main(String[] args) {
-		QuizView quizView = new QuizView();
-		quizView.setLayout(null);
-		quizView.setSize(500,500);
-		quizView.setVisible(true);
-
-		//1
-		//z pl na ang, tryb testu, stały poziom trudności, wysoki poziom trudności 
-		// IQuizDifficultyManager quizDifficultyManager = new StaticQuiz();
-		// quizDifficultyManager.setDifficulty(Constants.hardDifficultyLevel);
-		// setQuiz(new TestQuizState(), Constants.languagePl, QuizConfiguration.getInstance(), quizDifficultyManager, quizView);
-
-		//2
-		//z ang na pl, tryb testu, stały poziom trudności, wysoki poziom trudności
-		//IQuizDifficultyManager quizDifficultyManager = new StaticQuiz();
-		// quizDifficultyManager.setDifficulty(Constants.hardDifficultyLevel);
-		// setQuiz(new TestQuizState(), Constants.languageEng, QuizConfiguration.getInstance(), quizDifficultyManager, quizView);
-
-		//3
-		//z pl na ang, tryb nauki, stały poziom trudności, wysoki poziom trudności 
-		//IQuizDifficultyManager quizDifficultyManager = new StaticQuiz();
-		// quizDifficultyManager.setDifficulty(Constants.hardDifficultyLevel);
-		// setQuiz(new LearningQuizState(), Constants.languagePl, QuizConfiguration.getInstance(), quizDifficultyManager, quizView);
-
-		//4
-		//z ang na pl, tryb nauki, stały poziom trudności, wysoki poziom trudności
-		//IQuizDifficultyManager quizDifficultyManager = new StaticQuiz();
-		// quizDifficultyManager.setDifficulty(Constants.hardDifficultyLevel);
-		// setQuiz(new LearningQuizState(), Constants.languageEng, QuizConfiguration.getInstance(), quizDifficultyManager, quizView);
-
-		//5
-		//z pl na ang, tryb nauki, stały poziom trudności, niski poziom trudności
-		// IQuizDifficultyManager quizDifficultyManager = new StaticQuiz();
-		// quizDifficultyManager.setDifficulty(Constants.easyDifficultyLevel);
-		// setQuiz(new LearningQuizState(), Constants.languagePl, QuizConfiguration.getInstance(), quizDifficultyManager, quizView);
-
-		//6
-		//z ang na pl, tryb nauki, stały poziom trudności, niski poziom trudności
-		//IQuizDifficultyManager quizDifficultyManager = new StaticQuiz();
-		// quizDifficultyManager.setDifficulty(Constants.easyDifficultyLevel);
-		// setQuiz(new LearningQuizState(), Constants.languageEng, QuizConfiguration.getInstance(), quizDifficultyManager, quizView);
-
-		//7
-		//z pl na ang, tryb testu, stały poziom trudności, niski poziom trudności
-		//IQuizDifficultyManager quizDifficultyManager = new StaticQuiz();
-		// quizDifficultyManager.setDifficulty(Constants.easyDifficultyLevel);
-		// setQuiz(new TestQuizState(), Constants.languagePl, QuizConfiguration.getInstance(), quizDifficultyManager, quizView);
-
-		//8
-		//z ang na pl, tryb nauki, stały poziom trudności, niski poziom trudności
-		//IQuizDifficultyManager quizDifficultyManager = new StaticQuiz();
-		// quizDifficultyManager.setDifficulty(Constants.easyDifficultyLevel);
-		// setQuiz(new TestQuizState(), Constants.languageEng, QuizConfiguration.getInstance(), quizDifficultyManager, quizView);
-
-		//9
-		//z pl na ang, tryb testu, adaptatywny poziom trudności (zaczyna się na łatwym)
-		// QuizConfiguration quizConfiguration = QuizConfiguration.getInstance();
-		// IQuizDifficultyManager quizDifficultyManager = new AdaptiveQuiz(quizConfiguration.getToEasyInTestMode(), quizConfiguration.getToHardInTestMode());
-		// quizDifficultyManager.setDifficulty(Constants.easyDifficultyLevel);
-		// setQuiz(new TestQuizState(), Constants.languagePl, QuizConfiguration.getInstance(), quizDifficultyManager, quizView);
-
-		//10
-		//z ang na pl, tryb testu, adaptatywny poziom trudności (zaczyna się na łatwym)
-		// QuizConfiguration quizConfiguration = QuizConfiguration.getInstance();
-		// IQuizDifficultyManager quizDifficultyManager = new AdaptiveQuiz(quizConfiguration.getToEasyInTestMode(), quizConfiguration.getToHardInTestMode());
-		// quizDifficultyManager.setDifficulty(Constants.easyDifficultyLevel);
-		// setQuiz(new TestQuizState(), Constants.languageEng, QuizConfiguration.getInstance(), quizDifficultyManager, quizView);
-
-		//11
-		//z pl na ang, tryb testu, adaptatywny poziom trudności (zaczyna się na trudnym)
-		// QuizConfiguration quizConfiguration = QuizConfiguration.getInstance();
-		// IQuizDifficultyManager quizDifficultyManager = new AdaptiveQuiz(quizConfiguration.getToEasyInTestMode(), quizConfiguration.getToHardInTestMode());
-		// quizDifficultyManager.setDifficulty(Constants.hardDifficultyLevel);
-		// setQuiz(new TestQuizState(), Constants.languagePl, QuizConfiguration.getInstance(), quizDifficultyManager, quizView);
-
-		//12
-		//z ang na pl, tryb testu, adaptatywny poziom trudności (zaczyna się na trudnym)
-		// QuizConfiguration quizConfiguration = QuizConfiguration.getInstance();
-		// IQuizDifficultyManager quizDifficultyManager = new AdaptiveQuiz(quizConfiguration.getToEasyInTestMode(), quizConfiguration.getToHardInTestMode());
-		// quizDifficultyManager.setDifficulty(Constants.hardDifficultyLevel);
-		// setQuiz(new TestQuizState(), Constants.languageEng, QuizConfiguration.getInstance(), quizDifficultyManager, quizView);
-
-		//13
-		//z pl na ang, tryb nauki, adaptatywny poziom trudności (zaczyna się na łatwym)
-		// QuizConfiguration quizConfiguration = QuizConfiguration.getInstance();
-		// IQuizDifficultyManager quizDifficultyManager = new AdaptiveQuiz(quizConfiguration.getToEasyInLeariningMode(), quizConfiguration.getToHardInLeariningMode());
-		// quizDifficultyManager.setDifficulty(Constants.easyDifficultyLevel);
-		// setQuiz(new LearningQuizState(), Constants.languagePl, QuizConfiguration.getInstance(), quizDifficultyManager, quizView);
-
-		//14
-		//z ang na pl, tryb nauki, adaptatywny poziom trudności (zaczyna się na łatwym)
-		// QuizConfiguration quizConfiguration = QuizConfiguration.getInstance();
-		// IQuizDifficultyManager quizDifficultyManager = new AdaptiveQuiz(quizConfiguration.getToEasyInLeariningMode(), quizConfiguration.getToHardInLeariningMode());
-		// quizDifficultyManager.setDifficulty(Constants.easyDifficultyLevel);
-		// setQuiz(new LearningQuizState(), Constants.languageEng, QuizConfiguration.getInstance(), quizDifficultyManager, quizView);
-
-		//15
-		//z pl na ang, tryb nauki, adaptatywny poziom trudności (zaczyna się na trudnym)
-		// QuizConfiguration quizConfiguration = QuizConfiguration.getInstance();
-		// IQuizDifficultyManager quizDifficultyManager = new AdaptiveQuiz(quizConfiguration.getToEasyInLeariningMode(), quizConfiguration.getToHardInLeariningMode());
-		// quizDifficultyManager.setDifficulty(Constants.hardDifficultyLevel);
-		// setQuiz(new LearningQuizState(), Constants.languagePl, QuizConfiguration.getInstance(), quizDifficultyManager, quizView);
-
-		//16
-		//z ang na pl, tryb nauki, adaptatywny poziom trudności (zaczyna się na trudnym)
-		QuizConfiguration quizConfiguration = QuizConfiguration.getInstance();
-		IQuizDifficultyManager quizDifficultyManager = new AdaptiveQuiz(quizConfiguration.getToEasyInLeariningMode(), quizConfiguration.getToHardInLeariningMode());
-		quizDifficultyManager.setDifficulty(Constants.hardDifficultyLevel);
-		setQuiz(new LearningQuizState(), Constants.languageEng, QuizConfiguration.getInstance(), quizDifficultyManager, quizView);
+		SwingUtilities.invokeLater(() -> new Start());
 	}
 }
