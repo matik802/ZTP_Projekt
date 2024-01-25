@@ -25,42 +25,48 @@ public class LearningQuizState extends QuizState {
                 quizView.buildHardQuestionUI();
             }
             else {
-                int x = 0;
-                List<Word> answers = new ArrayList<>();
-            answers.add(currentQuestion.getCorrectAnswer());
-            for (int i = 0; i < quizConfiguration.getEasyDiffultyQuestions() + x; i++) {
-                n = rand.nextInt(wordsPool.size());
-                if (!wordsPool.get(n).getName().equals(currentQuestion.getCorrectAnswer().getName())) {
-                    Boolean checkIfOnList = false;
-                    for (Word a : answers) {
-                        if (a.getName().equals(wordsPool.get(n).getName())) {
-                            x++;
-                            checkIfOnList = true;
-                        }
-                    }
-                    if (!checkIfOnList) answers.add(wordsPool.get(n));
-                }
-                else x++;
-            }
-            n = rand.nextInt(quizConfiguration.getEasyDiffultyQuestions());
-            if (n > 0) {
-                Word temp1 = answers.get(0);
-                Word temp2 = answers.get(n);
-                answers.remove(n);
-                answers.remove(0);
-                answers.add(0, temp2);
-                answers.add(n, temp1);
-            }
-                quizView.setAnswers(answers);
-                quizView.buildEasyQuestionUI();
+                preBuildEasy(rand);
             }
             quizView.setQuestion(currentQuestion.getQuestionToAnswer());
             quizView.setNextButtonAction(this);
         }
     }
 
+    public void preBuildEasy(Random rand){
+        int x = 0, n;
+
+        List<Word> answers = new ArrayList<>();
+        answers.add(currentQuestion.getCorrectAnswer());
+        for (int i = 0; i < quizConfiguration.getEasyDiffultyQuestions() + x; i++) {
+            n = rand.nextInt(wordsPool.size());
+            if (!wordsPool.get(n).getName().equals(currentQuestion.getCorrectAnswer().getName())) {
+                Boolean checkIfOnList = false;
+                for (Word a : answers) {
+                    if (a.getName().equals(wordsPool.get(n).getName())) {
+                        x++;
+                        checkIfOnList = true;
+                    }
+                }
+                if (!checkIfOnList) answers.add(wordsPool.get(n));
+            }
+            else x++;
+        }
+        n = rand.nextInt(quizConfiguration.getEasyDiffultyQuestions());
+        if (n > 0) {
+            Word temp1 = answers.get(0);
+            Word temp2 = answers.get(n);
+            answers.remove(n);
+            answers.remove(0);
+            answers.add(0, temp2);
+            answers.add(n, temp1);
+        }
+        quizView.setAnswers(answers);
+        quizView.buildEasyQuestionUI();
+    }
+
     @Override
     public void getNextQuestion() {
+
         String userAnswer = null;
         if (oldDifficulty.equals(Constants.easyDifficultyLevel)) {
             userAnswer = quizView.getSelectAnswer();
@@ -84,10 +90,13 @@ public class LearningQuizState extends QuizState {
         }
 
         if (!answeredCorrectly) return;
-        
+
         if (!oldDifficulty.equals(difficulty)) {
             quizView.clear();
-            if (difficulty.equals(Constants.easyDifficultyLevel)) quizView.buildEasyQuestionUI();
+            if (difficulty.equals(Constants.easyDifficultyLevel)){
+                preBuildEasy(new Random());
+                quizView.buildEasyQuestionUI();
+            }
             else quizView.buildHardQuestionUI();
             quizView.setNextButtonAction(this);
             oldDifficulty = difficulty;

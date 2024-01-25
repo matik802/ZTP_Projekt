@@ -42,15 +42,15 @@ public abstract class QuizState {
                     String translation = (String) jsonObject.get("translation");
 
                     if (questionsLanguage.equals(Constants.languageEng)) {
-                        Word tempWord = new Word(translation,Constants.languagePl);
-                        wordsPool.add(tempWord);
-                        Question tempQuestion = new Question(word, Constants.languageEng);
-                        tempQuestion.setCorrectAnswer(tempWord);
-                        questionsPool.add(tempQuestion);
-                    } else {
                         Word tempWord = new Word(word,Constants.languageEng);
                         wordsPool.add(tempWord);
                         Question tempQuestion = new Question(translation, Constants.languagePl);
+                        tempQuestion.setCorrectAnswer(tempWord);
+                        questionsPool.add(tempQuestion);
+                    } else {
+                        Word tempWord = new Word(translation,Constants.languagePl);
+                        wordsPool.add(tempWord);
+                        Question tempQuestion = new Question(word, Constants.languageEng);
                         tempQuestion.setCorrectAnswer(tempWord);
                         questionsPool.add(tempQuestion);
                     }

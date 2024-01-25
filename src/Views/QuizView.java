@@ -13,7 +13,7 @@ public class QuizView extends JFrame {
 	private JButton nextButton = new JButton();
 
 	private JPanel selectAnswerPanel = new JPanel();
-	private JLabel backgroundLabel;
+	private JLabel backgroundLabel = new JLabel();
 	private List<Word> answers;
 	private String selectAnswer;
 
@@ -37,7 +37,7 @@ public class QuizView extends JFrame {
 	public void buildHardQuestionUI() {
 		clear();
 
-		backgroundLabel = new JLabel(new ImageIcon("src/hardQuestionBackground.jpg"));
+		backgroundLabel.setIcon(new ImageIcon("src/hardQuestionBackground.jpg"));
 		backgroundLabel.setBounds(0, 0, getWidth(), getHeight());
 		backgroundLabel.setLayout(null);
 
@@ -54,6 +54,7 @@ public class QuizView extends JFrame {
 		userAnswerTextField.setForeground(Color.gray);
 		userAnswerTextField.setFont(new Font("Arial",Font.BOLD,20));
 		userAnswerTextField.setBorder(null);
+		userAnswerTextField.setVisible(true);
 		userAnswerTextField.setOpaque(false);
 		userAnswerTextField.addMouseListener(new MouseAdapter() {
 			@Override
@@ -72,7 +73,6 @@ public class QuizView extends JFrame {
 		nextButton.setForeground(Color.WHITE);
 		backgroundLabel.add(nextButton);
 
-		userAnswerTextField.setVisible(true);
 		add(backgroundLabel);
 		setLayout(null);
 	}
@@ -80,7 +80,7 @@ public class QuizView extends JFrame {
 	public void buildEasyQuestionUI() {
 		clear();
 
-		backgroundLabel = new JLabel(new ImageIcon("src/easyQuestionBackground.jpg"));
+		backgroundLabel.setIcon(new ImageIcon("src/easyQuestionBackground.jpg"));
 		backgroundLabel.setBounds(0, 0, getWidth(), getHeight());
 		backgroundLabel.setLayout(null);
 
@@ -108,7 +108,6 @@ public class QuizView extends JFrame {
 
 		backgroundLabel.add(selectAnswerPanel);
 
-		userAnswerTextField.setVisible(true);
 		add(backgroundLabel);
 		setLayout(null);
 	}
