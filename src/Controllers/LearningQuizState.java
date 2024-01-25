@@ -1,5 +1,6 @@
 package Controllers;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -130,6 +131,8 @@ public class LearningQuizState extends QuizState {
         }
         else {          
             quizView.setQuestion(currentQuestion.getQuestionToAnswer());
+            quizView.getUserAnswerTextField().setForeground(Color.gray);
+            quizView.getUserAnswerTextField().setText("Write your answer:");
         }
         answeredCorrectly = false;
     }

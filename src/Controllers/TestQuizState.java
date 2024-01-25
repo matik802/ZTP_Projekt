@@ -1,5 +1,6 @@
 package Controllers;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -48,8 +49,8 @@ public class TestQuizState extends QuizState{
                     answers.add(0, temp2);
                     answers.add(n, temp1);
                 }
-                quizView.buildEasyQuestionUI();
                 quizView.setAnswers(answers);
+                quizView.buildEasyQuestionUI();
             }
             quizView.setQuestion(currentQuestion.getQuestionToAnswer());
             quizView.setNextButtonAction(this);
@@ -121,13 +122,15 @@ public class TestQuizState extends QuizState{
                 answers.add(0, temp2);
                 answers.add(n, temp1);
             }
-            
+
             quizView.setAnswers(answers);
             quizView.setQuestion(currentQuestion.getQuestionToAnswer());
         }
         else {
             quizView.setQuestion(currentQuestion.getQuestionToAnswer());
+            quizView.getUserAnswerTextField().setForeground(Color.gray);
+            quizView.getUserAnswerTextField().setText("Write your answer:");
         }
     }
-    
+
 }
