@@ -37,7 +37,7 @@ public class QuizView extends JFrame {
 	public void buildHardQuestionUI() {
 		clear();
 
-		backgroundLabel = new JLabel(new ImageIcon("ZTP_Projekt/src/hardQuestionBackground.jpg"));
+		backgroundLabel = new JLabel(new ImageIcon("src/hardQuestionBackground.jpg"));
 		backgroundLabel.setBounds(0, 0, getWidth(), getHeight());
 		backgroundLabel.setLayout(null);
 
@@ -80,7 +80,7 @@ public class QuizView extends JFrame {
 	public void buildEasyQuestionUI() {
 		clear();
 
-		backgroundLabel = new JLabel(new ImageIcon("ZTP_Projekt/src/easyQuestionBackground.jpg"));
+		backgroundLabel = new JLabel(new ImageIcon("src/easyQuestionBackground.jpg"));
 		backgroundLabel.setBounds(0, 0, getWidth(), getHeight());
 		backgroundLabel.setLayout(null);
 

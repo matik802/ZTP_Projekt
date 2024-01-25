@@ -7,8 +7,7 @@ public class Question {
     private Word correctAnswer;
     private String language;
 
-    public Question(int correctAnswerId, String questionToAnswer, String language) {
-        this.correctAnswerId = correctAnswerId;
+    public Question(String questionToAnswer, String language) {
         this.questionToAnswer = questionToAnswer;
         this.language = language;
     }

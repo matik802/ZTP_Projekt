@@ -1,6 +1,7 @@
 import Controllers.*;
 import Utils.Constants;
 import Views.QuizView;
+import Views.AddWordsDialog;
 
 import javax.swing.*;
 import java.awt.*;
@@ -35,7 +36,7 @@ public class Start extends JFrame implements ActionListener {
 		setLocationRelativeTo(null);
 		setResizable(false);
 
-		JLabel mainPanel = new JLabel(new ImageIcon("ZTP_Projekt/src/menuBackground.jpg"));
+		final JLabel mainPanel = new JLabel(new ImageIcon("src/menuBackground.jpg"));
 		mainPanel.setLayout(null);
 
 		startButton = new JButton("Start");
@@ -50,7 +51,7 @@ public class Start extends JFrame implements ActionListener {
 			public void actionPerformed(ActionEvent e) {
 				setQuizMenu();
 				mainPanel.removeAll();
-				mainPanel.setIcon(new ImageIcon("ZTP_Projekt/src/quizMenuBackground.jpg"));
+				mainPanel.setIcon(new ImageIcon("src/quizMenuBackground.jpg"));
 				mainPanel.add(quizMenu);
 				repaint();
 				revalidate();
@@ -65,6 +66,13 @@ public class Start extends JFrame implements ActionListener {
 		addWordsButton.setContentAreaFilled(false);
 		addWordsButton.setFont(new Font("Arial",Font.BOLD,30));
 		addWordsButton.setForeground(new Color(85,182,214));
+		addWordsButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				AddWordsDialog addWordsDialog = new AddWordsDialog(Start.this);
+				addWordsDialog.setVisible(true);
+			}
+		});
 		mainPanel.add(addWordsButton);
 
 		exitButton = new JButton("Exit");
@@ -99,8 +107,6 @@ public class Start extends JFrame implements ActionListener {
 		int centerY = (getHeight() - menuHeight) / 2;
 
 		quizMenu.setBounds(centerX-15, centerY, menuWidth, menuHeight);
-
-
 
 		JPanel languagePanel = new JPanel();
 		languagePanel.setBorder(BorderFactory.createTitledBorder("Choose Language"));
