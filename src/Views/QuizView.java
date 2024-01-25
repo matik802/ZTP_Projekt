@@ -13,9 +13,10 @@ public class QuizView extends JFrame {
 	private JTextField userAnswerTextField = new JTextField();
 	private JButton nextButton = new JButton();
 
-	private JList<String> selectAnswerList = new JList<>();
 	private JPanel selectAnswerPanel = new JPanel();
 	private JLabel backgroundLabel;
+	private List<Word> answers;
+	private String selectAnswer;
 
 	public QuizView() {
 		setSize(563, 383);
@@ -30,7 +31,6 @@ public class QuizView extends JFrame {
 		backgroundLabel.remove(questionLabel);
 		backgroundLabel.remove(userAnswerTextField);
 		backgroundLabel.remove(nextButton);
-		selectAnswerPanel.remove(selectAnswerList);
 		backgroundLabel.remove(selectAnswerPanel);
 		backgroundLabel.revalidate();
 		backgroundLabel.repaint();
@@ -50,7 +50,6 @@ public class QuizView extends JFrame {
 		nextButton.setBounds(10, 100, 150, 30);
 		backgroundLabel.add(nextButton);
 		selectAnswerPanel.setVisible(false);
-		selectAnswerList.setVisible(false);
 		userAnswerTextField.setVisible(true);
 	}
 
@@ -68,28 +67,22 @@ public class QuizView extends JFrame {
 		nextButton.setBounds(10, 140, 150, 30);
 		backgroundLabel.add(nextButton);
 
-		selectAnswerList = new JList<>();
-		selectAnswerList.setModel(new AbstractListModel() {
-			String[] strings = {"Item 1", "Item 2", "Item 3", "Item 4"};
-
-			@Override
-			public int getSize() {
-				return strings.length;
-			}
-
-			@Override
-			public Object getElementAt(int i) {
-				return strings[i];
-			}
-		});
-
 		selectAnswerPanel = new JPanel();
-		selectAnswerPanel.add(selectAnswerList);
-		selectAnswerPanel.setBounds(10, 40, 200, 50);
+		for (Word w: answers) {
+			JButton answerButton = new JButton(w.getName());
+			answerButton.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					JButton temp = (JButton) e.getSource();
+					selectAnswer=temp.getText();
+				}
+			});
+			selectAnswerPanel.add(answerButton);
+		}
+		selectAnswerPanel.setBounds(10, 40, 200, 200);
 		backgroundLabel.add(selectAnswerPanel);
 
 		selectAnswerPanel.setVisible(true);
-		selectAnswerList.setVisible(true);
 		userAnswerTextField.setVisible(true);
 
 		add(backgroundLabel);
@@ -97,27 +90,11 @@ public class QuizView extends JFrame {
 	}
 
 	public void setAnswers(List<Word> answers) {
-		List<String> tempAnswers = new ArrayList<>();
-		for (Word w : answers) {
-			tempAnswers.add(w.getName());
-		}
-		selectAnswerList.setModel(new AbstractListModel() {
-			List<String> strings = tempAnswers;
-
-			@Override
-			public int getSize() {
-				return strings.size();
-			}
-
-			@Override
-			public Object getElementAt(int i) {
-				return strings.get(i);
-			}
-		});
+		this.answers=answers;
 	}
 
-	public JList getSelectAnswerList() {
-		return selectAnswerList;
+	public String getSelectAnswer() {
+		return selectAnswer;
 	}
 
 	public void setQuestion(String question) {

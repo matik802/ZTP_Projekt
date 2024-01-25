@@ -50,8 +50,8 @@ public class LearningQuizState extends QuizState {
                 answers.add(0, temp2);
                 answers.add(n, temp1);
             }
-                quizView.buildEasyQuestionUI();
                 quizView.setAnswers(answers);
+                quizView.buildEasyQuestionUI();
             }
             quizView.setQuestion(currentQuestion.getQuestionToAnswer());
             quizView.setNextButtonAction(this);
@@ -62,7 +62,7 @@ public class LearningQuizState extends QuizState {
     public void getNextQuestion() {
         String userAnswer = null;
         if (oldDifficulty.equals(Constants.easyDifficultyLevel)) {
-            userAnswer = quizView.getSelectAnswerList().getSelectedValue().toString();
+            userAnswer = quizView.getSelectAnswer();
         }
         else if (oldDifficulty.equals(Constants.hardDifficultyLevel)) {
             userAnswer = quizView.getUserAnswerTextField().getText();

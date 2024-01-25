@@ -60,7 +60,7 @@ public class TestQuizState extends QuizState{
     public void getNextQuestion() {
         String userAnswer = null;
         if (quizDifficultyManager.getDifficulty().equals(Constants.easyDifficultyLevel)) {
-            userAnswer = quizView.getSelectAnswerList().getSelectedValue().toString();
+            userAnswer = quizView.getSelectAnswer();
         }
         else if (quizDifficultyManager.getDifficulty().equals(Constants.hardDifficultyLevel)) {
             userAnswer = quizView.getUserAnswerTextField().getText();
