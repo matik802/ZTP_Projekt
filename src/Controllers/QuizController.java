@@ -12,10 +12,6 @@ public class QuizController {
         quizState.startQuiz();
     }
 
-    public void getNextQuestion() {
-        quizState.getNextQuestion();
-    }
-
     public void setQuizState(QuizState quizState) {
         this.quizState = quizState;
     }

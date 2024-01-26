@@ -4,19 +4,22 @@ import Views.QuizView;
 import Views.AddWordsDialog;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class Start extends JFrame implements ActionListener {
 
-	private static JButton learnButton, testButton, easyButton, hardButton, adaptiveButton, polishButton, englishButton, startButton, playButton, exitButton, addWordsButton;
-	private IQuizDifficultyManager quizDifficultyManager;
-	private QuizConfiguration quizConfiguration;
-	private QuizState quizState;
-	private String startingDifficulty, startingLanguage;
+	private static JButton learnButton, testButton, easyButton, hardButton, adaptiveButton, polishButton, englishButton, startButton, playButton, exitButton, addWordsButton, backButton;
+	private static IQuizDifficultyManager quizDifficultyManager;
+	private static QuizConfiguration quizConfiguration;
+	private static QuizState quizState;
+	private static String startingDifficulty;
+	private static String startingLanguage;
 	private QuizView quizView;
 	private JLabel quizMenu;
+	private JLabel mainPanel;
 
 	public static void setQuiz(QuizState quizState, String language, QuizConfiguration quizConfiguration, IQuizDifficultyManager quizDifficultyManager, QuizView quizView) {
 		QuizController quizController = new QuizController();
@@ -27,6 +30,7 @@ public class Start extends JFrame implements ActionListener {
 		quizController.setQuizView(quizView);
 		quizController.fetchData();
 		quizController.startQuiz();
+		setDefaults();
 	}
 
 	public Start() {
@@ -36,7 +40,7 @@ public class Start extends JFrame implements ActionListener {
 		setLocationRelativeTo(null);
 		setResizable(false);
 
-		final JLabel mainPanel = new JLabel(new ImageIcon("src/menuBackground.jpg"));
+		mainPanel = new JLabel(new ImageIcon("src/menuBackground.jpg"));
 		mainPanel.setLayout(null);
 
 		startButton = new JButton("Start");
@@ -99,62 +103,109 @@ public class Start extends JFrame implements ActionListener {
 		quizMenu.setBounds(0, 0, 450, 540);
 		quizMenu.setOpaque(false);
 		quizMenu.setLayout(null);
-		setDefaults();
+
 
 		int menuWidth = 400;
 		int menuHeight = 500;
 		int centerX = (getWidth() - menuWidth) / 2;
 		int centerY = (getHeight() - menuHeight) / 2;
 
-		quizMenu.setBounds(centerX-15, centerY, menuWidth, menuHeight);
+		quizMenu.setBounds(centerX-15, centerY+40, menuWidth, menuHeight);
 
 		JPanel languagePanel = new JPanel();
-		languagePanel.setBorder(BorderFactory.createTitledBorder("Choose Language"));
 		languagePanel.setLayout(new GridLayout(1, 2));
+		JLabel languageText = new JLabel("Choose language");
+		languageText.setForeground(Color.WHITE);
+		languageText.setHorizontalAlignment(SwingConstants.CENTER);
+		languageText.setBounds(50, 30, 300, 20);
 		polishButton = createButton("Polish", languagePanel);
-		polishButton.setEnabled(false);
 		englishButton = createButton("English", languagePanel);
 		languagePanel.setBounds(50, 50, 300, 50);
 
+
 		JPanel quizTypePanel = new JPanel();
-		quizTypePanel.setBorder(BorderFactory.createTitledBorder("Choose Quiz Type"));
 		quizTypePanel.setLayout(new GridLayout(1, 2));
+		JLabel quizTypeText = new JLabel("Choose quiz type");
+		quizTypeText.setForeground(Color.WHITE);
+		quizTypeText.setHorizontalAlignment(SwingConstants.CENTER);
+		quizTypeText.setBounds(50, 130, 300, 20);
 		learnButton = createButton("Learn", quizTypePanel);
-		learnButton.setEnabled(false);
 		testButton = createButton("Test", quizTypePanel);
 		quizTypePanel.setBounds(50, 150, 300, 50);
 
 		JPanel difficultyPanel = new JPanel();
-		difficultyPanel.setBorder(BorderFactory.createTitledBorder("Choose Difficulty"));
 		difficultyPanel.setLayout(new GridLayout(1, 3));
+		JLabel difficultyText = new JLabel("Choose quiz difficulty");
+		difficultyText.setForeground(Color.WHITE);
+		difficultyText.setHorizontalAlignment(SwingConstants.CENTER);
+		difficultyText.setBounds(50, 230, 300, 20);
 		easyButton = createButton("Easy", difficultyPanel);
-		easyButton.setEnabled(false);
 		hardButton = createButton("Hard", difficultyPanel);
 		adaptiveButton = createButton("Adaptive", difficultyPanel);
 		difficultyPanel.setBounds(50, 250, 300, 50);
 
 		JPanel startPanel = new JPanel();
-		startPanel.setBorder(BorderFactory.createTitledBorder("Start Quiz"));
-		startButton = createButton("Start", startPanel);
+		startPanel.setLayout(new GridLayout(1, 1));
+		playButton = createButton("Start", startPanel);
 		startPanel.setBounds(50, 350, 300, 50);
 
+
+		JPanel backButtonPanel = new JPanel();
+		backButtonPanel.setLayout(new GridLayout(1, 1));
+		backButton = createButton("Go back", backButtonPanel);
+		backButtonPanel.setBounds(50, 450, 300, 50);
+		
+
+		setDefaults();
+
+		quizMenu.add(languageText);
 		quizMenu.add(languagePanel);
+		quizMenu.add(quizTypeText);
 		quizMenu.add(quizTypePanel);
+		quizMenu.add(difficultyText);
 		quizMenu.add(difficultyPanel);
 		quizMenu.add(startPanel);
+		quizMenu.add(backButtonPanel);
 	}
-	void setDefaults() {
+	static void setDefaults() {
 		startingDifficulty = Constants.easyDifficultyLevel;
 		startingLanguage = Constants.languagePl;
 		quizDifficultyManager = new StaticQuiz();
 		quizDifficultyManager.setDifficulty(startingDifficulty);
 		quizConfiguration = QuizConfiguration.getInstance();
 		quizState = new LearningQuizState();
+		setdDefaultButtons();
+	}
+
+	static void setdDefaultButtons(){
+		polishButton.setEnabled(false);
+		englishButton.setEnabled(true);
+		learnButton.setEnabled(false);
+		testButton.setEnabled(true);
+		easyButton.setEnabled(false);
+		hardButton.setEnabled(true);
+		adaptiveButton.setEnabled(true);
 	}
 
 	private JButton createButton(String label, JPanel panel) {
 		JButton button = new JButton(label);
 		button.addActionListener(this);
+		button.setContentAreaFilled(false);
+		panel.setOpaque(false);
+		button.setBorderPainted(true);
+		button.setFocusPainted(false);
+
+		if(label.equals("Start")){
+			button.setForeground(new Color(142,253,148));
+			button.setBorder(new LineBorder(new Color(142,253,148), 2));
+		}else if(label.equals("Go back")){
+			button.setForeground(new Color(253,240,144));
+			button.setBorder(new LineBorder(new Color(253,240,144), 2));
+		} else {
+			button.setForeground(new Color(165,248,254));
+			button.setBorder(new LineBorder(new Color(165,248,254), 2));
+		}
+
 		panel.add(button);
 		return button;
 	}
@@ -176,9 +227,17 @@ public class Start extends JFrame implements ActionListener {
 			if (sourceButton == adaptiveButton) {
 				showAdaptiveOptionsDialog();
 			}
-		} else if (sourceButton == startButton) {
+		} else if (sourceButton == playButton) {
 			quizView = new QuizView();
 			setQuiz(quizState, startingLanguage, quizConfiguration, quizDifficultyManager, quizView);
+		} else {
+			mainPanel.removeAll();
+			mainPanel.setIcon(new ImageIcon("src/menuBackground.jpg"));
+			mainPanel.add(startButton);
+			mainPanel.add(addWordsButton);
+			mainPanel.add(exitButton);
+			repaint();
+			revalidate();
 		}
 
 		switch (sourceButton.getText()) {

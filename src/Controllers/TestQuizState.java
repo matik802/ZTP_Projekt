@@ -7,6 +7,7 @@ import java.util.Random;
 
 import Models.Word;
 import Utils.Constants;
+import Views.QuizSummaryWindow;
 
 public class TestQuizState extends QuizState{
     private int points = 0;
@@ -62,18 +63,24 @@ public class TestQuizState extends QuizState{
         String userAnswer = null;
         if (quizDifficultyManager.getDifficulty().equals(Constants.easyDifficultyLevel)) {
             userAnswer = quizView.getSelectAnswer();
-        }
-        else if (quizDifficultyManager.getDifficulty().equals(Constants.hardDifficultyLevel)) {
+        } else if (quizDifficultyManager.getDifficulty().equals(Constants.hardDifficultyLevel)) {
             userAnswer = quizView.getUserAnswerTextField().getText();
         }
 
         String prevDifficulty = quizDifficultyManager.getDifficulty();
         String difficulty = null;
-        if (currentQuestion.getCorrectAnswer().getName().toLowerCase().equals(userAnswer.toLowerCase())) {
+
+        String currentAnswer="";
+        try {
+            currentAnswer = userAnswer.toLowerCase();
+        } catch (Exception e){
+
+        }
+
+        if (currentQuestion.getCorrectAnswer().getName().toLowerCase().equals(currentAnswer)) {
             points++;
             difficulty = quizDifficultyManager.getDifficulty(true);
-        }
-        else {
+        } else {
             difficulty = quizDifficultyManager.getDifficulty(false);
         }
 
@@ -85,8 +92,8 @@ public class TestQuizState extends QuizState{
         }
 
         if (++questionsCount >= quizConfiguration.getQuizLength()) {
-            //summary screen
-            quizView.showQuizOverScreen(points);
+            new QuizSummaryWindow(points);
+            quizView.dispose();
             return;
         }
 
@@ -110,8 +117,7 @@ public class TestQuizState extends QuizState{
                         }
                     }
                     if (!checkIfOnList) answers.add(wordsPool.get(n));
-                }
-                else x++;
+                } else x++;
             }
             n = rand.nextInt(quizConfiguration.getEasyDiffultyQuestions());
             if (n > 0) {
@@ -125,8 +131,7 @@ public class TestQuizState extends QuizState{
 
             quizView.setAnswers(answers);
             quizView.setQuestion(currentQuestion.getQuestionToAnswer());
-        }
-        else {
+        } else {
             quizView.setQuestion(currentQuestion.getQuestionToAnswer());
             quizView.getUserAnswerTextField().setForeground(Color.gray);
             quizView.getUserAnswerTextField().setText("Write your answer:");

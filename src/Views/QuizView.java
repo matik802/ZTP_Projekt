@@ -157,39 +157,10 @@ public class QuizView extends JFrame {
 		backgroundLabel.add(questionLabel);
 	}
 
-	public void showQuizOverScreen(int points) {
-		clear();
-		if (points >= 0) {
-			setQuestion("You scored " + points + " points!");
-			getNextButton().setVisible(false);
-			getUserAnswerTextField().setVisible(false);
-		} else {
-			setQuestion("You have finished the test!");
-			getNextButton().setVisible(false);
-			getUserAnswerTextField().setVisible(false);
-		}
-	}
 
-	public JLabel getQuestionLabel() {
-		return questionLabel;
-	}
-
-	public void setQuestionLabel(JLabel questionLabel) {
-		this.questionLabel = questionLabel;
-		backgroundLabel.add(questionLabel);
-	}
 
 	public JTextField getUserAnswerTextField() {
 		return userAnswerTextField;
-	}
-
-	public void setUserAnswerTextField(JTextField userAnswerTextField) {
-		this.userAnswerTextField = userAnswerTextField;
-		backgroundLabel.add(userAnswerTextField);
-	}
-
-	public JButton getNextButton() {
-		return nextButton;
 	}
 
 	public void setNextButtonAction(QuizState quizState) {

@@ -7,6 +7,7 @@ import java.util.Random;
 
 import Models.Word;
 import Utils.Constants;
+import Views.QuizSummaryWindow;
 
 public class LearningQuizState extends QuizState {
     private Boolean answeredCorrectly = false;
@@ -76,12 +77,20 @@ public class LearningQuizState extends QuizState {
         }
 
         String difficulty = null;
-        if (currentQuestion.getCorrectAnswer().getName().toLowerCase().equals(userAnswer.toLowerCase())) {
+
+        String currentAnswer="";
+        try {
+            currentAnswer = userAnswer.toLowerCase();
+        } catch (Exception e){
+
+        }
+
+        if (currentQuestion.getCorrectAnswer().getName().toLowerCase().equals(currentAnswer)) {
             difficulty = quizDifficultyManager.getDifficulty(true);
             answeredCorrectly = true;
             if (++questionsCount == quizConfiguration.getQuizLength()) {
-                //summary screen
-                quizView.showQuizOverScreen(-1);
+                new QuizSummaryWindow(-1);
+                quizView.dispose();
                 return;
             }
         }

@@ -50,7 +50,7 @@ public abstract class QuizState {
                     } else {
                         Word tempWord = new Word(translation,Constants.languagePl);
                         wordsPool.add(tempWord);
-                        Question tempQuestion = new Question(word, Constants.languageEng);
+                        Question tempQuestion = new Question(word, Constants.languagePl);
                         tempQuestion.setCorrectAnswer(tempWord);
                         questionsPool.add(tempQuestion);
                     }
@@ -63,10 +63,6 @@ public abstract class QuizState {
     public abstract void startQuiz();
 
     public abstract void getNextQuestion();
-
-    public void setQuizContoller(QuizController quizController) {
-        this.quizController = quizController;
-    }
 
     public void setQuizView(QuizView quizView) {
         this.quizView = quizView;
