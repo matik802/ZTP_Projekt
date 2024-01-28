@@ -6,11 +6,11 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class QuizSummaryWindow extends JFrame {
-    private int points;
-    private JLabel background;
+public class QuizSummaryView extends JFrame {
+    private final int points;
+    private final JLabel background;
 
-    public QuizSummaryWindow(int points) {
+    public QuizSummaryView(int points) {
         this.points = points;
 
         setTitle("Quiz Summary");

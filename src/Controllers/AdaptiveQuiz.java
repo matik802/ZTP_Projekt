@@ -6,8 +6,8 @@ public class AdaptiveQuiz implements IQuizDifficultyManager{
     private String difficulty;
     private int badAnswerStreak;
     private int goodAnswerStreak;
-    private int streakToEasy;
-    private int streakToHard;
+    private final int streakToEasy;
+    private final int streakToHard;
 
     public AdaptiveQuiz(int streakToEasy, int streakToHard) {
         super();

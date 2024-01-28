@@ -1,12 +1,12 @@
 package Controllers;
 public class QuizConfiguration {
     private static QuizConfiguration configuration = null;
-    private int easyDiffultyQuestions = 3;
-    private int quizLength = 2;
-    private int toEasyInLeariningMode = 5;
-    private int toHardInLeariningMode = 5;
-    private int toEasyInTestMode = 5;
-    private int toHardInTestMode = 5;
+    private final int easyDiffultyQuestions = 3;
+    private final int quizLength = 2;
+    private final int toEasyInLeariningMode = 5;
+    private final int toHardInLeariningMode = 5;
+    private final int toEasyInTestMode = 5;
+    private final int toHardInTestMode = 5;
 
     public static QuizConfiguration getInstance() {
         if (configuration == null) configuration = new QuizConfiguration();

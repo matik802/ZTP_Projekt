@@ -7,7 +7,7 @@ import java.util.Random;
 
 import Models.Word;
 import Utils.Constants;
-import Views.QuizSummaryWindow;
+import Views.QuizSummaryView;
 
 public class TestQuizState extends QuizState{
     private int points = 0;
@@ -92,7 +92,7 @@ public class TestQuizState extends QuizState{
         }
 
         if (++questionsCount >= quizConfiguration.getQuizLength()) {
-            new QuizSummaryWindow(points);
+            new QuizSummaryView(points);
             quizView.dispose();
             return;
         }

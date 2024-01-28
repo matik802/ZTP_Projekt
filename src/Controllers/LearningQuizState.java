@@ -7,7 +7,7 @@ import java.util.Random;
 
 import Models.Word;
 import Utils.Constants;
-import Views.QuizSummaryWindow;
+import Views.QuizSummaryView;
 
 public class LearningQuizState extends QuizState {
     private Boolean answeredCorrectly = false;
@@ -89,7 +89,7 @@ public class LearningQuizState extends QuizState {
             difficulty = quizDifficultyManager.getDifficulty(true);
             answeredCorrectly = true;
             if (++questionsCount == quizConfiguration.getQuizLength()) {
-                new QuizSummaryWindow(-1);
+                new QuizSummaryView(-1);
                 quizView.dispose();
                 return;
             }

@@ -19,13 +19,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AddWordsDialog extends JDialog {
-    private DefaultTableModel tableModel;
-    private JTable wordsTable;
-    private JButton addButton, deleteButton, editButton;
+public class AddWordsView extends JDialog {
+    private final DefaultTableModel tableModel;
+    private final JTable wordsTable;
+    private final JButton addButton;
+    private final JButton deleteButton;
+    private final JButton editButton;
     private List<Question> questionList;
 
-    public AddWordsDialog(JFrame parent) {
+    public AddWordsView(JFrame parent) {
         super(parent, "Add/Edit Words", true);
         setSize(600, 400);
         setLocationRelativeTo(parent);
@@ -59,7 +61,7 @@ public class AddWordsDialog extends JDialog {
                     questionList = initQuestions();
                     refreshTable();
                 } else {
-                    JOptionPane.showMessageDialog(AddWordsDialog.this, "Both Question and Translation fields are required.", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(AddWordsView.this, "Both Question and Translation fields are required.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -89,7 +91,7 @@ public class AddWordsDialog extends JDialog {
                         questionList = initQuestions();
                         refreshTable();
                     } else {
-                        JOptionPane.showMessageDialog(AddWordsDialog.this, "Both Question and Translation fields are required.", "Error", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(AddWordsView.this, "Both Question and Translation fields are required.", "Error", JOptionPane.ERROR_MESSAGE);
                     }
                 }
             }

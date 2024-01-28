@@ -13,7 +13,7 @@ public class QuizView extends JFrame {
 	private JButton nextButton = new JButton();
 
 	private JPanel selectAnswerPanel = new JPanel();
-	private JLabel backgroundLabel = new JLabel();
+	private final JLabel backgroundLabel = new JLabel();
 	private List<Word> answers;
 	private String selectAnswer;
 
