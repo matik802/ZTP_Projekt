@@ -17,15 +17,20 @@ import java.util.List;
 
 public class DatabaseAccess {
 
+    // Pula słów i pytań
     List<Word> wordsPool = new ArrayList<>();
     List<Question> questionsPool = new ArrayList<>();
+
+    // Język pytań w bazie danych
     private final String questionsLanguage;
 
+    // Konstruktor klasy
     public DatabaseAccess(String questionsLanguage) {
         this.questionsLanguage = questionsLanguage;
         initializeDatabase();
     }
 
+    // Inicjalizacja bazy danych z pliku JSON
     private void initializeDatabase() {
         JSONParser parser = new JSONParser();
         try (FileReader reader = new FileReader("src/words.json")) {
@@ -36,6 +41,7 @@ public class DatabaseAccess {
                 String word = (String) jsonObject.get("word");
                 String translation = (String) jsonObject.get("translation");
 
+                // Dodanie słowa i pytania do puli w zależności od języka pytań
                 if (questionsLanguage.equals(Constants.languageEng)) {
                     Word tempWord = new Word(word, Constants.languageEng);
                     wordsPool.add(tempWord);
@@ -55,14 +61,17 @@ public class DatabaseAccess {
         }
     }
 
+    // Pobranie puli słów
     public List<Word> getWords() {
         return wordsPool;
     }
 
+    // Pobranie puli pytań
     public List<Question> getQuestions() {
         return questionsPool;
     }
 
+    // Inicjalizacja pytań (alternatywna metoda)
     public List<Question> initQuestions() {
         List<Question> questionList = new ArrayList<>();
 
@@ -88,6 +97,7 @@ public class DatabaseAccess {
         return questionList;
     }
 
+    // Dodanie nowego słowa do pliku JSON
     public void addWordToJsonFile(String question, String translation) {
         JSONParser parser = new JSONParser();
         try (FileReader reader = new FileReader("src/words.json")) {
@@ -112,6 +122,7 @@ public class DatabaseAccess {
         }
     }
 
+    // Generowanie unikalnego identyfikatora dla nowego słowa
     public int generateUniqueId(JSONArray jsonArray) {
         int maxId = 0;
 
@@ -126,6 +137,7 @@ public class DatabaseAccess {
         return maxId + 1;
     }
 
+    // Usunięcie słowa z pliku JSON
     public void deleteWordFromJsonFile(String question) {
         JSONParser parser = new JSONParser();
         try (FileReader reader = new FileReader("src/words.json")) {
@@ -150,6 +162,7 @@ public class DatabaseAccess {
         }
     }
 
+    // Edycja słowa w pliku JSON
     public void editWordInJsonFile(String oldQuestion, String newQuestion, String newTranslation) {
         JSONParser parser = new JSONParser();
         try (FileReader reader = new FileReader("src/words.json")) {
@@ -175,6 +188,7 @@ public class DatabaseAccess {
         }
     }
 
+    // Odświeżanie tabeli w interfejsie graficznym
     public void refreshTable(DefaultTableModel tableModel, List<Question> questionList) {
         tableModel.setRowCount(0);
 

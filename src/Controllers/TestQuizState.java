@@ -9,9 +9,11 @@ import Models.Word;
 import Utils.Constants;
 import Views.QuizSummaryView;
 
-public class TestQuizState extends QuizState{
+// Klasa reprezentująca stan quizu w trybie testowym
+public class TestQuizState extends QuizState {
     private int points = 0;
 
+    // Metoda rozpoczynająca quiz w trybie testowym
     @Override
     public void startQuiz() {
         Random rand = new Random();
@@ -22,8 +24,7 @@ public class TestQuizState extends QuizState{
 
             if (quizDifficultyManager.getDifficulty().equals(Constants.hardDifficultyLevel)) {
                 quizView.buildHardQuestionUI();
-            }
-            else {
+            } else {
                 int x = 0;
                 List<Word> answers = new ArrayList<>();
                 answers.add(currentQuestion.getCorrectAnswer());
@@ -38,8 +39,7 @@ public class TestQuizState extends QuizState{
                             }
                         }
                         if (!checkIfOnList) answers.add(wordsPool.get(n));
-                    }
-                    else x++;
+                    } else x++;
                 }
                 n = rand.nextInt(quizConfiguration.getEasyDiffultyQuestions());
                 if (n > 0) {
@@ -58,6 +58,7 @@ public class TestQuizState extends QuizState{
         }
     }
 
+    // Metoda przechodząca do kolejnego pytania w trybie testowym
     @Override
     public void getNextQuestion() {
         String userAnswer = null;
@@ -70,11 +71,11 @@ public class TestQuizState extends QuizState{
         String prevDifficulty = quizDifficultyManager.getDifficulty();
         String difficulty = null;
 
-        String currentAnswer="";
+        String currentAnswer = "";
         try {
             currentAnswer = userAnswer.toLowerCase();
-        } catch (Exception e){
-
+        } catch (Exception e) {
+            // Obsługa ewentualnych błędów
         }
 
         if (currentQuestion.getCorrectAnswer().getName().toLowerCase().equals(currentAnswer)) {
@@ -84,6 +85,7 @@ public class TestQuizState extends QuizState{
             difficulty = quizDifficultyManager.getDifficulty(false);
         }
 
+        // Jeżeli zmienił się poziom trudności, aktualizuj widok pytania
         if (!prevDifficulty.equals(difficulty)) {
             quizView.clear();
             if (difficulty.equals(Constants.easyDifficultyLevel)) quizView.buildEasyQuestionUI();
@@ -91,19 +93,23 @@ public class TestQuizState extends QuizState{
             quizView.setNextButtonAction(this);
         }
 
+        // Sprawdź czy osiągnięto maksymalną liczbę pytań w quizie
         if (++questionsCount >= quizConfiguration.getQuizLength()) {
-            new QuizSummaryView(points);
-            quizView.dispose();
+            new QuizSummaryView(points); // Wyświetl podsumowanie quizu
+            quizView.dispose(); // Zamknij widok quizu
             return;
         }
 
+        // Usuń aktualne pytanie z puli
         questionsPool.remove(currentQuestion);
 
+        // Losuj nowe pytanie z puli
         Random rand = new Random();
         int n = rand.nextInt(questionsPool.size());
         currentQuestion = questionsPool.get(n);
         int x = 0;
         if (difficulty.equals(Constants.easyDifficultyLevel)) {
+            // Jeżeli łatwy poziom trudności, zbuduj listę odpowiedzi
             List<Word> answers = new ArrayList<>();
             answers.add(currentQuestion.getCorrectAnswer());
             for (int i = 0; i < quizConfiguration.getEasyDiffultyQuestions() + x; i++) {
@@ -129,13 +135,14 @@ public class TestQuizState extends QuizState{
                 answers.add(n, temp1);
             }
 
+            // Ustaw odpowiedzi i pytanie w widoku
             quizView.setAnswers(answers);
             quizView.setQuestion(currentQuestion.getQuestionToAnswer());
         } else {
+            // Jeżeli trudny poziom trudności, ustaw pytanie w widoku
             quizView.setQuestion(currentQuestion.getQuestionToAnswer());
             quizView.getUserAnswerTextField().setForeground(Color.gray);
             quizView.getUserAnswerTextField().setText("Write your answer:");
         }
     }
-
 }

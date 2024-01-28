@@ -13,31 +13,35 @@ public class QuizSummaryView extends JFrame {
     public QuizSummaryView(int points) {
         this.points = points;
 
+        // Ustawienia okna
         setTitle("Quiz Summary");
         setSize(563, 450);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setResizable(false);
 
+        // Ustawienia tła
         background = new JLabel();
         background.setIcon(new ImageIcon("src/summaryBackground.jpg"));
         background.setLayout(new GridLayout(3, 1, 0, 10));
 
-
+        // Wyświetlanie informacji w zależności od wyników
         if (points == -1) {
             displayLearningInfo();
         } else {
             displayTestDone();
         }
 
+        // Dodanie przycisku do zamykania okna
         addExitButton();
 
+        // Dodanie tła do okna
         add(background);
         setVisible(true);
     }
 
+    // Wyświetlanie informacji o zakończeniu sesji edukacyjnej
     private void displayLearningInfo() {
-        // Dodaj pustą etykietę na górze komórki dla odstępu
         JLabel emptyLabel = new JLabel("");
         background.add(emptyLabel);
 
@@ -48,8 +52,8 @@ public class QuizSummaryView extends JFrame {
         background.add(label);
     }
 
+    // Wyświetlanie informacji o zakończonym teście
     private void displayTestDone() {
-        // Dodaj pustą etykietę na górze komórki dla odstępu
         JLabel emptyLabel = new JLabel("");
         background.add(emptyLabel);
 
@@ -60,6 +64,7 @@ public class QuizSummaryView extends JFrame {
         background.add(label);
     }
 
+    // Dodanie przycisku do zamykania okna
     private void addExitButton() {
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));

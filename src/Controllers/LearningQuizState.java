@@ -9,10 +9,12 @@ import Models.Word;
 import Utils.Constants;
 import Views.QuizSummaryView;
 
+// Klasa reprezentująca stan quizu w trybie nauki
 public class LearningQuizState extends QuizState {
     private Boolean answeredCorrectly = false;
     private String oldDifficulty;
 
+    // Metoda rozpoczynająca quiz
     @Override
     public void startQuiz() {
         oldDifficulty = quizDifficultyManager.getDifficulty();
@@ -22,10 +24,10 @@ public class LearningQuizState extends QuizState {
             n = rand.nextInt(questionsPool.size());
             currentQuestion = questionsPool.get(n);
 
+            // Wybór interfejsu użytkownika w zależności od poziomu trudności
             if (quizDifficultyManager.getDifficulty().equals(Constants.hardDifficultyLevel)) {
                 quizView.buildHardQuestionUI();
-            }
-            else {
+            } else {
                 preBuildEasy(rand);
             }
             quizView.setQuestion(currentQuestion.getQuestionToAnswer());
@@ -33,7 +35,8 @@ public class LearningQuizState extends QuizState {
         }
     }
 
-    public void preBuildEasy(Random rand){
+    // Metoda przygotowująca pytanie dla trybu łatwego
+    public void preBuildEasy(Random rand) {
         int x = 0, n;
 
         List<Word> answers = new ArrayList<>();
@@ -49,8 +52,7 @@ public class LearningQuizState extends QuizState {
                     }
                 }
                 if (!checkIfOnList) answers.add(wordsPool.get(n));
-            }
-            else x++;
+            } else x++;
         }
         n = rand.nextInt(quizConfiguration.getEasyDiffultyQuestions());
         if (n > 0) {
@@ -65,52 +67,54 @@ public class LearningQuizState extends QuizState {
         quizView.buildEasyQuestionUI();
     }
 
+    // Metoda do przechodzenia do następnego pytania
     @Override
     public void getNextQuestion() {
 
         String userAnswer = null;
         if (oldDifficulty.equals(Constants.easyDifficultyLevel)) {
             userAnswer = quizView.getSelectAnswer();
-        }
-        else if (oldDifficulty.equals(Constants.hardDifficultyLevel)) {
+        } else if (oldDifficulty.equals(Constants.hardDifficultyLevel)) {
             userAnswer = quizView.getUserAnswerTextField().getText();
         }
 
         String difficulty = null;
 
-        String currentAnswer="";
+        String currentAnswer = "";
         try {
             currentAnswer = userAnswer.toLowerCase();
-        } catch (Exception e){
+        } catch (Exception e) {
 
         }
 
+        // Sprawdzenie poprawności odpowiedzi
         if (currentQuestion.getCorrectAnswer().getName().toLowerCase().equals(currentAnswer)) {
             difficulty = quizDifficultyManager.getDifficulty(true);
             answeredCorrectly = true;
             if (++questionsCount == quizConfiguration.getQuizLength()) {
+                // Wyświetlenie podsumowania quizu
                 new QuizSummaryView(-1);
                 quizView.dispose();
                 return;
             }
-        }
-        else {
+        } else {
             difficulty = quizDifficultyManager.getDifficulty(false);
         }
 
         if (!answeredCorrectly) return;
 
+        // Sprawdzenie zmiany trudności i dostosowanie interfejsu
         if (!oldDifficulty.equals(difficulty)) {
             quizView.clear();
-            if (difficulty.equals(Constants.easyDifficultyLevel)){
+            if (difficulty.equals(Constants.easyDifficultyLevel)) {
                 preBuildEasy(new Random());
                 quizView.buildEasyQuestionUI();
-            }
-            else quizView.buildHardQuestionUI();
+            } else quizView.buildHardQuestionUI();
             quizView.setNextButtonAction(this);
             oldDifficulty = difficulty;
-        }   
+        }
 
+        // Usunięcie bieżącego pytania z puli
         questionsPool.remove(currentQuestion);
 
         Random rand = new Random();
@@ -131,8 +135,7 @@ public class LearningQuizState extends QuizState {
                         }
                     }
                     if (!checkIfOnList) answers.add(wordsPool.get(n));
-                }
-                else x++;
+                } else x++;
             }
             n = rand.nextInt(quizConfiguration.getEasyDiffultyQuestions());
             if (n > 0) {
@@ -146,13 +149,11 @@ public class LearningQuizState extends QuizState {
 
             quizView.setAnswers(answers);
             quizView.setQuestion(currentQuestion.getQuestionToAnswer());
-        }
-        else {          
+        } else {
             quizView.setQuestion(currentQuestion.getQuestionToAnswer());
             quizView.getUserAnswerTextField().setForeground(Color.gray);
             quizView.getUserAnswerTextField().setText("Write your answer:");
         }
         answeredCorrectly = false;
     }
-    
 }

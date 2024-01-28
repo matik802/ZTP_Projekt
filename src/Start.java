@@ -1,25 +1,14 @@
-import Controllers.*;
-import Utils.Constants;
 import Views.QuizMenuView;
-import Views.QuizView;
 import Views.AddWordsView;
 
 import javax.swing.*;
-import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class Start extends JFrame{
+public class Start extends JFrame {
 
-	private static JButton learnButton, testButton, easyButton, hardButton, adaptiveButton, polishButton, englishButton, startButton, playButton, exitButton, addWordsButton, backButton;
-	private static IQuizDifficultyManager quizDifficultyManager;
-	private static QuizConfiguration quizConfiguration;
-	private static QuizState quizState;
-	private static String startingDifficulty;
-	private static String startingLanguage;
-	private QuizView quizView;
-	private JLabel quizMenu;
+	private static JButton startButton, exitButton, addWordsButton;
 	private final JLabel mainPanel;
 
 	public Start() {
@@ -29,31 +18,34 @@ public class Start extends JFrame{
 		setLocationRelativeTo(null);
 		setResizable(false);
 
+		// Utworzenie głównego panelu z tłem
 		mainPanel = new JLabel(new ImageIcon("src/menuBackground.jpg"));
 		mainPanel.setLayout(null);
 
+		// Przycisk uruchamiający quiz
 		startButton = new JButton("Start");
-		startButton.setBounds(517,260,240,115);
+		startButton.setBounds(517, 260, 240, 115);
 		startButton.setBorderPainted(false);
 		startButton.setFocusPainted(false);
 		startButton.setContentAreaFilled(false);
-		startButton.setFont(new Font("Arial",Font.BOLD,30));
-		startButton.setForeground(new Color(215,102,156));
+		startButton.setFont(new Font("Arial", Font.BOLD, 30));
+		startButton.setForeground(new Color(215, 102, 156));
 		startButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new QuizMenuView(mainPanel,startButton,addWordsButton,exitButton);
+				new QuizMenuView(mainPanel, startButton, addWordsButton, exitButton);
 			}
 		});
 		mainPanel.add(startButton);
 
+		// Przycisk umożliwiający edycję słów
 		addWordsButton = new JButton("Edit words");
-		addWordsButton.setBounds(517,442,240,115);
+		addWordsButton.setBounds(517, 442, 240, 115);
 		addWordsButton.setBorderPainted(false);
 		addWordsButton.setFocusPainted(false);
 		addWordsButton.setContentAreaFilled(false);
-		addWordsButton.setFont(new Font("Arial",Font.BOLD,30));
-		addWordsButton.setForeground(new Color(85,182,214));
+		addWordsButton.setFont(new Font("Arial", Font.BOLD, 30));
+		addWordsButton.setForeground(new Color(85, 182, 214));
 		addWordsButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -63,13 +55,14 @@ public class Start extends JFrame{
 		});
 		mainPanel.add(addWordsButton);
 
+		// Przycisk zamykający aplikację
 		exitButton = new JButton("Exit");
-		exitButton.setBounds(517,625,240,115);
+		exitButton.setBounds(517, 625, 240, 115);
 		exitButton.setBorderPainted(false);
 		exitButton.setFocusPainted(false);
 		exitButton.setContentAreaFilled(false);
-		exitButton.setFont(new Font("Arial",Font.BOLD,30));
-		exitButton.setForeground(new Color(181,69,195));
+		exitButton.setFont(new Font("Arial", Font.BOLD, 30));
+		exitButton.setForeground(new Color(181, 69, 195));
 		exitButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -78,12 +71,13 @@ public class Start extends JFrame{
 		});
 		mainPanel.add(exitButton);
 
+		// Wyświetlenie głównego okna
 		setVisible(true);
-		add(mainPanel,BorderLayout.NORTH);
+		add(mainPanel, BorderLayout.NORTH);
 	}
 
-
 	public static void main(String[] args) {
+		// Uruchomienie aplikacji w wątku GUI
 		SwingUtilities.invokeLater(() -> new Start());
 	}
 }

@@ -1,25 +1,16 @@
 package Views;
 
-import Controllers.DatabaseAccess;
+import Controllers.QuizController;
 import Models.Question;
-import Models.Word;
-import Utils.Constants;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
+// Klasa reprezentująca widok do dodawania, edytowania i usuwania słów
 public class AddWordsView extends JDialog {
     private final DefaultTableModel tableModel;
     private final JTable wordsTable;
@@ -27,8 +18,9 @@ public class AddWordsView extends JDialog {
     private final JButton deleteButton;
     private final JButton editButton;
     private List<Question> questionList;
-    private final DatabaseAccess databaseAccess;
+    private final QuizController controller = new QuizController();
 
+    // Konstruktor widoku
     public AddWordsView(JFrame parent) {
         super(parent, "Add/Edit Words", true);
         setSize(600, 400);
@@ -38,9 +30,8 @@ public class AddWordsView extends JDialog {
         tableModel = new DefaultTableModel(columnNames, 0);
         wordsTable = new JTable(tableModel);
 
-        databaseAccess = new DatabaseAccess(Constants.languageEng); // Change accordingly
-
-        questionList = databaseAccess.initQuestions();
+        // Inicjalizacja listy pytań
+        questionList = controller.initQuestions();
         refreshTable();
 
         JScrollPane scrollPane = new JScrollPane(wordsTable);
@@ -50,6 +41,7 @@ public class AddWordsView extends JDialog {
         deleteButton = new JButton("Delete Word");
         editButton = new JButton("Edit Word");
 
+        // Obsługa dodawania nowego słowa
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -64,6 +56,7 @@ public class AddWordsView extends JDialog {
             }
         });
 
+        // Obsługa usuwania słowa
         deleteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -74,6 +67,7 @@ public class AddWordsView extends JDialog {
             }
         });
 
+        // Obsługa edycji słowa
         editButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -101,25 +95,29 @@ public class AddWordsView extends JDialog {
         getContentPane().add(buttonPanel, BorderLayout.SOUTH);
     }
 
+    // Metoda dodająca nowe słowo do pliku JSON i odświeżająca tabelę
     private void addWordToJsonFile(String question, String translation) {
-        databaseAccess.addWordToJsonFile(question, translation);
-        questionList = databaseAccess.initQuestions();
-        refreshTable();
+        controller.addWordToJsonFile(question, translation);
+        questionList = controller.initQuestions();
+        controller.refreshTable(tableModel, questionList);
     }
 
+    // Metoda usuwająca słowo z pliku JSON i odświeżająca tabelę
     private void deleteWordFromJsonFile(String question) {
-        databaseAccess.deleteWordFromJsonFile(question);
-        questionList = databaseAccess.initQuestions();
+        controller.deleteWordFromJsonFile(question);
+        questionList = controller.initQuestions();
         refreshTable();
     }
 
+    // Metoda edytująca słowo w pliku JSON i odświeżająca tabelę
     private void editWordInJsonFile(String oldQuestion, String newQuestion, String newTranslation) {
-        databaseAccess.editWordInJsonFile(oldQuestion, newQuestion, newTranslation);
-        questionList = databaseAccess.initQuestions();
+        controller.editWordInJsonFile(oldQuestion, newQuestion, newTranslation);
+        questionList = controller.initQuestions();
         refreshTable();
     }
 
+    // Metoda odświeżająca tabelę
     private void refreshTable() {
-        databaseAccess.refreshTable(tableModel, questionList);
+        controller.refreshTable(tableModel, questionList);
     }
 }

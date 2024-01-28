@@ -3,15 +3,15 @@ package Views;
 import Controllers.*;
 import Utils.Constants;
 
-
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-
+// Klasa reprezentująca widok menu quizu
 public class QuizMenuView implements ActionListener {
+    // Komponenty interfejsu użytkownika
     private final JButton learnButton, testButton, easyButton, hardButton, adaptiveButton, polishButton, englishButton, startButton, playButton, exitButton, addWordsButton, backButton;
     private static IQuizDifficultyManager quizDifficultyManager;
     private static QuizConfiguration quizConfiguration;
@@ -22,8 +22,9 @@ public class QuizMenuView implements ActionListener {
     private final JLabel quizMenu;
     private final JLabel mainPanel;
 
+    // Konstruktor widoku menu quizu
     public QuizMenuView(JLabel mainPanel, JButton startButton, JButton addWordsButton, JButton exitButton) {
-
+        // Inicjalizacja komponentów
         this.mainPanel = mainPanel;
         this.startButton = startButton;
         this.addWordsButton = addWordsButton;
@@ -34,14 +35,14 @@ public class QuizMenuView implements ActionListener {
         quizMenu.setOpaque(false);
         quizMenu.setLayout(null);
 
-
+        // Ustawienia pozycji i rozmiarów menu
         int menuWidth = 400;
         int menuHeight = 500;
         int centerX = (mainPanel.getWidth() - menuWidth) / 2;
         int centerY = (mainPanel.getHeight() - menuHeight) / 2;
-
         quizMenu.setBounds(centerX - 15, centerY + 40, menuWidth, menuHeight);
 
+        // Inicjalizacja panelu wyboru języka
         JPanel languagePanel = new JPanel();
         languagePanel.setLayout(new GridLayout(1, 2));
         JLabel languageText = new JLabel("Choose language");
@@ -52,7 +53,7 @@ public class QuizMenuView implements ActionListener {
         englishButton = createButton("English", languagePanel);
         languagePanel.setBounds(50, 50, 300, 50);
 
-
+        // Inicjalizacja panelu wyboru rodzaju quizu
         JPanel quizTypePanel = new JPanel();
         quizTypePanel.setLayout(new GridLayout(1, 2));
         JLabel quizTypeText = new JLabel("Choose quiz type");
@@ -63,6 +64,7 @@ public class QuizMenuView implements ActionListener {
         testButton = createButton("Test", quizTypePanel);
         quizTypePanel.setBounds(50, 150, 300, 50);
 
+        // Inicjalizacja panelu wyboru trudności quizu
         JPanel difficultyPanel = new JPanel();
         difficultyPanel.setLayout(new GridLayout(1, 3));
         JLabel difficultyText = new JLabel("Choose quiz difficulty");
@@ -74,19 +76,22 @@ public class QuizMenuView implements ActionListener {
         adaptiveButton = createButton("Adaptive", difficultyPanel);
         difficultyPanel.setBounds(50, 250, 300, 50);
 
+        // Inicjalizacja panelu rozpoczęcia quizu
         JPanel startPanel = new JPanel();
         startPanel.setLayout(new GridLayout(1, 1));
         playButton = createButton("Start", startPanel);
         startPanel.setBounds(50, 350, 300, 50);
 
-
+        // Inicjalizacja panelu przycisku powrotu
         JPanel backButtonPanel = new JPanel();
         backButtonPanel.setLayout(new GridLayout(1, 1));
         backButton = createButton("Go back", backButtonPanel);
         backButtonPanel.setBounds(50, 450, 300, 50);
 
-
+        // Ustawienia domyślne
         setDefaults();
+
+        // Dodanie komponentów do panelu menu
         mainPanel.removeAll();
         mainPanel.setIcon(new ImageIcon("src/quizMenuBackground.jpg"));
         mainPanel.add(quizMenu);
@@ -104,6 +109,7 @@ public class QuizMenuView implements ActionListener {
         mainPanel.add(quizMenu);
     }
 
+    // Metoda ustawiająca quiz z wybranymi opcjami
     public void setQuiz(QuizState quizState, String language, QuizConfiguration quizConfiguration, IQuizDifficultyManager quizDifficultyManager, QuizView quizView) {
         QuizController quizController = new QuizController();
         quizController.setQuizState(quizState);
@@ -116,6 +122,7 @@ public class QuizMenuView implements ActionListener {
         setDefaults();
     }
 
+    // Metoda ustawiająca wartości domyślne
     void setDefaults() {
         startingDifficulty = Constants.easyDifficultyLevel;
         startingLanguage = Constants.languagePl;
@@ -123,10 +130,11 @@ public class QuizMenuView implements ActionListener {
         quizDifficultyManager.setDifficulty(startingDifficulty);
         quizConfiguration = QuizConfiguration.getInstance();
         quizState = new LearningQuizState();
-        setdDefaultButtons();
+        setDefaultButtons();
     }
 
-    void setdDefaultButtons() {
+    // Metoda ustawiająca domyślne stany przycisków
+    void setDefaultButtons() {
         polishButton.setEnabled(false);
         englishButton.setEnabled(true);
         learnButton.setEnabled(false);
@@ -136,7 +144,7 @@ public class QuizMenuView implements ActionListener {
         adaptiveButton.setEnabled(true);
     }
 
-
+    // Metoda tworząca przycisk z określonym stylem
     private JButton createButton(String label, JPanel panel) {
         JButton button = new JButton(label);
         button.addActionListener(this);
@@ -145,6 +153,7 @@ public class QuizMenuView implements ActionListener {
         button.setBorderPainted(true);
         button.setFocusPainted(false);
 
+        // Ustawienie koloru przycisku w zależności od etykiety
         if (label.equals("Start")) {
             button.setForeground(new Color(142, 253, 148));
             button.setBorder(new LineBorder(new Color(142, 253, 148), 2));
@@ -160,27 +169,37 @@ public class QuizMenuView implements ActionListener {
         return button;
     }
 
+    // Obsługa zdarzeń przycisków
     @Override
     public void actionPerformed(ActionEvent e) {
         JButton sourceButton = (JButton) e.getSource();
 
+        // Obsługa wyboru języka
         if (sourceButton == polishButton || sourceButton == englishButton) {
             polishButton.setEnabled(sourceButton != polishButton);
             englishButton.setEnabled(sourceButton != englishButton);
-        } else if (sourceButton == learnButton || sourceButton == testButton) {
+        }
+        // Obsługa wyboru rodzaju quizu
+        else if (sourceButton == learnButton || sourceButton == testButton) {
             learnButton.setEnabled(sourceButton != learnButton);
             testButton.setEnabled(sourceButton != testButton);
-        } else if (sourceButton == easyButton || sourceButton == hardButton || sourceButton == adaptiveButton) {
+        }
+        // Obsługa wyboru trudności quizu
+        else if (sourceButton == easyButton || sourceButton == hardButton || sourceButton == adaptiveButton) {
             easyButton.setEnabled(sourceButton != easyButton);
             hardButton.setEnabled(sourceButton != hardButton);
             adaptiveButton.setEnabled(sourceButton != adaptiveButton);
             if (sourceButton == adaptiveButton) {
                 showAdaptiveOptionsDialog();
             }
-        } else if (sourceButton == playButton) {
+        }
+        // Obsługa rozpoczęcia quizu
+        else if (sourceButton == playButton) {
             quizView = new QuizView();
             setQuiz(quizState, startingLanguage, quizConfiguration, quizDifficultyManager, quizView);
-        } else {
+        }
+        // Obsługa powrotu do głównego menu
+        else {
             mainPanel.removeAll();
             mainPanel.setIcon(new ImageIcon("src/menuBackground.jpg"));
             mainPanel.add(startButton);
@@ -190,6 +209,7 @@ public class QuizMenuView implements ActionListener {
             mainPanel.revalidate();
         }
 
+        // Ustawienia wartości w zależności od naciśniętego przycisku
         switch (sourceButton.getText()) {
             case "Learn" -> {
                 quizState = new LearningQuizState();
@@ -222,16 +242,17 @@ public class QuizMenuView implements ActionListener {
         }
     }
 
+    // Metoda wyświetlająca okno dialogowe z opcjami adaptacyjnymi
     private void showAdaptiveOptionsDialog() {
         String[] options = {"Easy -> Hard", "Hard -> Easy"};
         int choice = JOptionPane.showOptionDialog(null, "Choose Adaptive Options", "Adaptive Options",
                 JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
+        // Ustawienia wartości w zależności od wybranej opcji
         if (choice == 0) {
             startingDifficulty = Constants.easyDifficultyLevel;
         } else if (choice == 1) {
             startingDifficulty = Constants.hardDifficultyLevel;
         }
     }
-
 }
