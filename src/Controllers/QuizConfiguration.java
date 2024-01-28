@@ -2,7 +2,7 @@ package Controllers;
 public class QuizConfiguration {
     private static QuizConfiguration configuration = null;
     private final int easyDiffultyQuestions = 3;
-    private final int quizLength = 2;
+    private final int quizLength = 20;
     private final int toEasyInLeariningMode = 5;
     private final int toHardInLeariningMode = 5;
     private final int toEasyInTestMode = 5;
