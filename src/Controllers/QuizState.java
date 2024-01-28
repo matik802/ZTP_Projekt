@@ -19,9 +19,9 @@ public abstract class QuizState {
     protected int questionsCount = 0;
 
     // Metoda do pobierania danych potrzebnych do przeprowadzenia quizu
-    public void fetchData() {
-        // Inicjalizacja kontrolera i pobranie danych z bazy
-        quizController = new QuizController();
+    public void fetchData(QuizController quizController) {
+        //pobranie danych z bazy
+
         wordsPool = quizController.getWords();
         questionsPool = quizController.getQuestions();
     }

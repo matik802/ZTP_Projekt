@@ -21,14 +21,17 @@ public class QuizMenuView implements ActionListener {
     private QuizView quizView;
     private final JLabel quizMenu;
     private final JLabel mainPanel;
+    private QuizController quizController;
 
     // Konstruktor widoku menu quizu
-    public QuizMenuView(JLabel mainPanel, JButton startButton, JButton addWordsButton, JButton exitButton) {
+    public QuizMenuView(QuizController quizController, JLabel mainPanel, JButton startButton, JButton addWordsButton, JButton exitButton) {
         // Inicjalizacja komponentów
         this.mainPanel = mainPanel;
         this.startButton = startButton;
         this.addWordsButton = addWordsButton;
         this.exitButton = exitButton;
+
+        this.quizController = quizController;
 
         quizMenu = new JLabel();
         quizMenu.setBounds(0, 0, 450, 540);
@@ -110,8 +113,7 @@ public class QuizMenuView implements ActionListener {
     }
 
     // Metoda ustawiająca quiz z wybranymi opcjami
-    public void setQuiz(QuizState quizState, String language, QuizConfiguration quizConfiguration, IQuizDifficultyManager quizDifficultyManager, QuizView quizView) {
-        QuizController quizController = new QuizController();
+    public void setQuiz(QuizController quizController, QuizState quizState, String language, QuizConfiguration quizConfiguration, IQuizDifficultyManager quizDifficultyManager, QuizView quizView) {
         quizController.setQuizState(quizState);
         quizController.setQuestionsLanguage(language);
         quizController.setQuizConfiguration(quizConfiguration);
@@ -196,7 +198,7 @@ public class QuizMenuView implements ActionListener {
         // Obsługa rozpoczęcia quizu
         else if (sourceButton == playButton) {
             quizView = new QuizView();
-            setQuiz(quizState, startingLanguage, quizConfiguration, quizDifficultyManager, quizView);
+            setQuiz(quizController, quizState, startingLanguage, quizConfiguration, quizDifficultyManager, quizView);
         }
         // Obsługa powrotu do głównego menu
         else {

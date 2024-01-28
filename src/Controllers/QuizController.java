@@ -14,11 +14,11 @@ public class QuizController {
     private QuizState quizState;
 
     // Obiekt dostępu do bazy danych
-    private DatabaseAccess databaseAccess = new DatabaseAccess(quizState.questionsLanguage);
+    private DatabaseAccess databaseAccess;
 
     // Metoda do pobierania danych
     public void fetchData() {
-        quizState.fetchData();
+        quizState.fetchData(this);
     }
 
     // Metoda do rozpoczęcia quizu
@@ -53,36 +53,44 @@ public class QuizController {
 
     // Metoda do inicjalizacji pytań
     public List<Question> initQuestions() {
+    DatabaseAccess databaseAccess = new DatabaseAccess(quizState.questionsLanguage);
+
         return databaseAccess.initQuestions();
     }
 
     // Metoda do dodawania słowa do pliku JSON
-    public void addWordToJsonFile(String question, String translation) {
+    public void addWordToJsonFile(String question, String translation) {    DatabaseAccess databaseAccess = new DatabaseAccess(quizState.questionsLanguage);
+
         databaseAccess.addWordToJsonFile(question, translation);
     }
 
     // Metoda do odświeżania tabeli w interfejsie graficznym
-    public void refreshTable(DefaultTableModel tableModel, List<Question> questionList) {
+    public void refreshTable(DefaultTableModel tableModel, List<Question> questionList) {    DatabaseAccess databaseAccess = new DatabaseAccess(quizState.questionsLanguage);
+
         databaseAccess.refreshTable(tableModel, questionList);
     }
 
     // Metoda do usuwania słowa z pliku JSON
-    public void deleteWordFromJsonFile(String question) {
+    public void deleteWordFromJsonFile(String question) {    DatabaseAccess databaseAccess = new DatabaseAccess(quizState.questionsLanguage);
+
         databaseAccess.deleteWordFromJsonFile(question);
     }
 
     // Metoda do edycji słowa w pliku JSON
-    public void editWordInJsonFile(String oldQuestion, String newQuestion, String newTranslation) {
+    public void editWordInJsonFile(String oldQuestion, String newQuestion, String newTranslation) {    DatabaseAccess databaseAccess = new DatabaseAccess(quizState.questionsLanguage);
+
         databaseAccess.editWordInJsonFile(oldQuestion, newQuestion, newTranslation);
     }
 
     // Metoda do pobierania listy słów
-    public List<Word> getWords() {
+    public List<Word> getWords() {    DatabaseAccess databaseAccess = new DatabaseAccess(quizState.questionsLanguage);
+
         return databaseAccess.getWords();
     }
 
     // Metoda do pobierania listy pytań
-    public List<Question> getQuestions() {
+    public List<Question> getQuestions() {    DatabaseAccess databaseAccess = new DatabaseAccess(quizState.questionsLanguage);
+
         return databaseAccess.getQuestions();
     }
 }

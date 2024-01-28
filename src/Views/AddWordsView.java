@@ -18,20 +18,21 @@ public class AddWordsView extends JDialog {
     private final JButton deleteButton;
     private final JButton editButton;
     private List<Question> questionList;
-    private final QuizController controller = new QuizController();
+    private QuizController quizController;
 
     // Konstruktor widoku
-    public AddWordsView(JFrame parent) {
+    public AddWordsView(JFrame parent, QuizController quizController) {
         super(parent, "Add/Edit Words", true);
         setSize(600, 400);
         setLocationRelativeTo(parent);
 
+        this.quizController = quizController;
         String[] columnNames = {"ID", "Word (ENG)", "Translation (PL)"};
         tableModel = new DefaultTableModel(columnNames, 0);
         wordsTable = new JTable(tableModel);
 
         // Inicjalizacja listy pytań
-        questionList = controller.initQuestions();
+        questionList = quizController.initQuestions();
         refreshTable();
 
         JScrollPane scrollPane = new JScrollPane(wordsTable);
@@ -97,27 +98,27 @@ public class AddWordsView extends JDialog {
 
     // Metoda dodająca nowe słowo do pliku JSON i odświeżająca tabelę
     private void addWordToJsonFile(String question, String translation) {
-        controller.addWordToJsonFile(question, translation);
-        questionList = controller.initQuestions();
-        controller.refreshTable(tableModel, questionList);
+        quizController.addWordToJsonFile(question, translation);
+        questionList = quizController.initQuestions();
+        quizController.refreshTable(tableModel, questionList);
     }
 
     // Metoda usuwająca słowo z pliku JSON i odświeżająca tabelę
     private void deleteWordFromJsonFile(String question) {
-        controller.deleteWordFromJsonFile(question);
-        questionList = controller.initQuestions();
+        quizController.deleteWordFromJsonFile(question);
+        questionList = quizController.initQuestions();
         refreshTable();
     }
 
     // Metoda edytująca słowo w pliku JSON i odświeżająca tabelę
     private void editWordInJsonFile(String oldQuestion, String newQuestion, String newTranslation) {
-        controller.editWordInJsonFile(oldQuestion, newQuestion, newTranslation);
-        questionList = controller.initQuestions();
+        quizController.editWordInJsonFile(oldQuestion, newQuestion, newTranslation);
+        questionList = quizController.initQuestions();
         refreshTable();
     }
 
     // Metoda odświeżająca tabelę
     private void refreshTable() {
-        controller.refreshTable(tableModel, questionList);
+        quizController.refreshTable(tableModel, questionList);
     }
 }

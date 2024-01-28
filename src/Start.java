@@ -1,3 +1,4 @@
+import Controllers.QuizController;
 import Views.QuizMenuView;
 import Views.AddWordsView;
 
@@ -10,6 +11,7 @@ public class Start extends JFrame {
 
 	private static JButton startButton, exitButton, addWordsButton;
 	private final JLabel mainPanel;
+	private QuizController quizController;
 
 	public Start() {
 		setTitle("Quiz App");
@@ -17,6 +19,8 @@ public class Start extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
 		setResizable(false);
+
+		quizController = new QuizController();
 
 		// Utworzenie głównego panelu z tłem
 		mainPanel = new JLabel(new ImageIcon("src/menuBackground.jpg"));
@@ -33,7 +37,7 @@ public class Start extends JFrame {
 		startButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new QuizMenuView(mainPanel, startButton, addWordsButton, exitButton);
+				new QuizMenuView(quizController, mainPanel, startButton, addWordsButton, exitButton);
 			}
 		});
 		mainPanel.add(startButton);
@@ -49,7 +53,7 @@ public class Start extends JFrame {
 		addWordsButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				AddWordsView addWordsDialog = new AddWordsView(Start.this);
+				AddWordsView addWordsDialog = new AddWordsView(Start.this, quizController);
 				addWordsDialog.setVisible(true);
 			}
 		});
