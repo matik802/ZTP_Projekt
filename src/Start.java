@@ -1,4 +1,8 @@
+import Controllers.LearningQuizState;
 import Controllers.QuizController;
+import Controllers.QuizState;
+import Controllers.TestQuizState;
+import Utils.Constants;
 import Views.QuizMenuView;
 import Views.AddWordsView;
 
@@ -53,6 +57,9 @@ public class Start extends JFrame {
 		addWordsButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				TestQuizState tempQuizState = new TestQuizState();
+				tempQuizState.setQuestionsLanguage(Constants.languageEng);
+				quizController.setQuizState(tempQuizState);
 				AddWordsView addWordsDialog = new AddWordsView(Start.this, quizController);
 				addWordsDialog.setVisible(true);
 			}
